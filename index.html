@@ -18,16 +18,16 @@
      og:image・og:urlは実際に公開するドメインに合わせて書き換えてください。
      og-image.png はこのHTMLと同じ階層に配置することを想定しています。 -->
 <meta property="og:title" content="プラコロシュミレーター">
-<meta property="og:description" content="キャラコロ×ワザカードの非公式対戦シミュレーター。ワザ構成やエネコロを自由にカスタマイズして対戦できます。">
+<meta property="og:description" content="ポケモン・ワザ・エネコロを自由にカスタマイズし対戦できる、「プラコロ」のシュミレーター。AI連携により、AIとの対戦や戦績集計も可能！">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://example.com/">
 <meta property="og:image" content="https://example.com/og-image.png">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="プラコロシュミレーター">
-<meta name="twitter:description" content="キャラコロ×ワザカードの非公式対戦シミュレーター">
+<meta name="twitter:description" content="ポケモン・ワザ・エネコロを自由にカスタマイズし対戦できる、「プラコロ」のシュミレーター。AI連携により、AIとの対戦や戦績集計も可能！">
 <meta name="twitter:image" content="https://example.com/og-image.png">
-<meta name="description" content="キャラコロ×ワザカードの非公式対戦シミュレーター。ワザ構成やエネコロを自由にカスタマイズして対戦できます。">
+<meta name="description" content="ポケモン・ワザ・エネコロを自由にカスタマイズし対戦できる、「プラコロ」のシュミレーター。AI連携により、AIとの対戦や戦績集計も可能！">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -1949,7 +1949,7 @@ async function startBattle(){
   if(aiPlayers.length){
     const connected = await testAIConnection();
     if(!connected){
-      alert("AI と つながらない！");
+      alert("AI連携されていません。「AI連携はこちら」から手順を確認してください。");
       return;
     }
   }
