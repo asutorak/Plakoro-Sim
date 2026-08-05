@@ -38,7 +38,7 @@
     --ink:#1A1A1A; --ink-soft:#5C5C60;
     --fire:#EE1515; --electric:#E8B400;
     --p1:#EE1515; --danger:#C62828; --panel:#FFFFFF; --good:#1D7A3F;
-    --pb-gold:#EE1515; --pb-gold-dark:#EE1515;
+    --pb-gold-dark:#EE1515;
   }
   *{box-sizing:border-box;}
   body{
@@ -253,7 +253,7 @@
     <span class="pokeball-icon" id="headerPokeball" style="cursor:pointer;"></span>
     <h1>プラコロシュミレーター</h1>
     <button type="button" id="aiInfoBtn" class="tag" style="display:inline-block;min-width:79px;min-height:14.5px;border:none;box-shadow:none;cursor:pointer;margin-left:auto;">AI連携はこちら</button>
-    <label id="evModeToggleLabel" style="display:none;font-size:10px;color:var(--ink-soft);align-items:center;gap:3.5px;cursor:pointer;font-weight:500;">
+    <label style="display:none;font-size:10px;color:var(--ink-soft);align-items:center;gap:3.5px;cursor:pointer;font-weight:500;">
       <input type="checkbox" id="evModeCheckbox" style="width:auto;margin:0;"> 期待値表示モード
     </label>
     <label style="width:100%;font-size:10px;color:var(--ink-soft);display:flex;align-items:center;gap:7px;font-weight:500;">
@@ -2171,31 +2171,35 @@ function computeRealTimeEV(move, tp, op){
   const uncondSelfDmg = move.moveEffects.filter(e=>e.kind==="selfDamage").reduce((s,e)=>s+e.value,0);
   const uncondRestrict = move.moveEffects.some(e=>e.kind==="disableOpponentMove") ? RESTRICTION_BONUS : 0;
   const uncondEnergy = move.moveEffects.reduce((s,e)=>s+energyVal(e),0);
-  let uncondCond = 0;
-  move.moveEffects.forEach(e=>{ const v=condVal(e); if(v){ uncondCond += (v.dmg||0)+(v.heal||0); } });
-
-  const unconditionalRaw = (move.dmg||0) + weaknessBonus + uncondHeal + uncondReduce + uncondRestrict + uncondEnergy + uncondCond - uncondSelfDmg;
-  const unconditionalEV = unconditionalRaw * moveSuccess;
+  // 「ダメージ」由来の値と、それ以外(回復・エネコロ変化等)の値を分けて集計する。
+  // 相手の被ダメ軽減・完全無効化は「ダメージ」部分にのみ適用されるべきなので、
+  // ここで分離しておかないと正しく反映できない。
+  let uncondDmgRaw = (move.dmg||0) + weaknessBonus;
+  let uncondNonDmgRaw = uncondHeal + uncondReduce + uncondRestrict + uncondEnergy - uncondSelfDmg;
+  move.moveEffects.forEach(e=>{
+    const v=condVal(e);
+    if(v){ uncondDmgRaw += (v.dmg||0); uncondNonDmgRaw += (v.heal||0); }
+  });
 
   const multiEff = move.moveEffects.find(e=>e.kind==="multiCharRoll");
   const N = multiEff ? multiEff.value : 1;
 
-  let charRaw = 0;
+  let charDmgRaw = 0, charNonDmgRaw = 0;
   move.charGroups.forEach(g=>{
     const pBase = g.orientations.length/6;
     const hasReroll = g.effects.some(e=>e.kind==="charRerollOnMatch");
     const hitsExpected = hasReroll ? (pBase/(1-pBase)) : (N*pBase);
 
-    let groupVal = 0;
-    groupVal += g.effects.filter(e=>e.kind==="bonusDamage").reduce((s,e)=>s+e.value,0);
-    groupVal += g.effects.filter(e=>e.kind==="selfHeal").reduce((s,e)=>s+e.value,0);
-    groupVal += g.effects.filter(e=>e.kind==="incomingDamageReductionNextHit").reduce((s,e)=>s+e.value,0) * NEXT_HIT_DEFENSE_RELIABILITY;
-    groupVal -= g.effects.filter(e=>e.kind==="selfDamage").reduce((s,e)=>s+e.value,0);
-    if(g.effects.some(e=>e.kind==="disableOpponentMove")) groupVal += RESTRICTION_BONUS;
-    if(g.effects.some(e=>e.kind==="opponentCharDieDisabledNextTurn")) groupVal += AVG_CHARCHECK_EV;
-    if(g.effects.some(e=>e.kind==="fullDamageImmunityNextHit")) groupVal += MEDIAN_TOP20_DMG * NEXT_HIT_DEFENSE_RELIABILITY;
+    let groupDmg = 0, groupNonDmg = 0;
+    groupDmg += g.effects.filter(e=>e.kind==="bonusDamage").reduce((s,e)=>s+e.value,0);
+    groupNonDmg += g.effects.filter(e=>e.kind==="selfHeal").reduce((s,e)=>s+e.value,0);
+    groupNonDmg += g.effects.filter(e=>e.kind==="incomingDamageReductionNextHit").reduce((s,e)=>s+e.value,0) * NEXT_HIT_DEFENSE_RELIABILITY;
+    groupNonDmg -= g.effects.filter(e=>e.kind==="selfDamage").reduce((s,e)=>s+e.value,0);
+    if(g.effects.some(e=>e.kind==="disableOpponentMove")) groupNonDmg += RESTRICTION_BONUS;
+    if(g.effects.some(e=>e.kind==="opponentCharDieDisabledNextTurn")) groupNonDmg += AVG_CHARCHECK_EV;
+    if(g.effects.some(e=>e.kind==="fullDamageImmunityNextHit")) groupNonDmg += MEDIAN_TOP20_DMG * NEXT_HIT_DEFENSE_RELIABILITY;
     const oppBonusEff = g.effects.find(e=>e.kind==="opponentCharRollBonus");
-    if(oppBonusEff){ groupVal += oppBonusEff.value * (oppBonusEff.orientations.length/6); }
+    if(oppBonusEff){ groupDmg += oppBonusEff.value * (oppBonusEff.orientations.length/6); }
     const damagePerEff = g.effects.find(e=>e.kind==="damagePerEnergyType");
     if(damagePerEff){
       // 実ダイスでの期待出現数を概算(そのタイプの面数/6 × ダイス数、ダブル面は2倍換算)
@@ -2203,28 +2207,40 @@ function computeRealTimeEV(move, tp, op){
       player.diceFaces.slice(0,diceCount).forEach(die=>{
         die.forEach(face=>{ face.forEach(t=>{ if(t===damagePerEff.energyType) expectedCount += 1/6; }); });
       });
-      groupVal += expectedCount * damagePerEff.value;
+      groupDmg += expectedCount * damagePerEff.value;
     }
     const maxTypeEff = g.effects.find(e=>e.kind==="opponentEnergyRollMaxTypeDamage");
     if(maxTypeEff){
-      groupVal += MEDIAN_TOP20_DMG*0.1*maxTypeEff.value; // 簡易推定(相手ダイス構成は不明なため概算)
+      groupDmg += MEDIAN_TOP20_DMG*0.1*maxTypeEff.value; // 簡易推定(相手ダイス構成は不明なため概算)
     }
     if(g.effects.some(e=>e.kind==="mirrorLastOpponentMoveDamage")){
       const oppLastMove = state.players[op].moves.find(m=>m.name===battle.status[op].lastMoveName);
-      groupVal += oppLastMove ? (oppLastMove.dmg||0) : MEDIAN_TOP20_DMG;
+      groupDmg += oppLastMove ? (oppLastMove.dmg||0) : MEDIAN_TOP20_DMG;
     }
     const doubleEff = g.effects.some(e=>e.kind==="doubleDamage");
     g.effects.forEach(e=>{
       const v = condVal(e);
-      if(v){ groupVal += (v.dmg||0)+(v.heal||0); }
+      if(v){ groupDmg += (v.dmg||0); groupNonDmg += (v.heal||0); }
     });
-    groupVal += g.effects.reduce((s,e)=>s+energyVal(e),0);
-    if(doubleEff) groupVal = groupVal*2 + unconditionalRaw; // 全体2倍(簡易近似)
+    groupNonDmg += g.effects.reduce((s,e)=>s+energyVal(e),0);
+    if(doubleEff){ groupDmg = groupDmg*2 + uncondDmgRaw; groupNonDmg = groupNonDmg*2 + uncondNonDmgRaw; } // 全体2倍(簡易近似)
 
-    charRaw += groupVal * hitsExpected;
+    charDmgRaw += groupDmg * hitsExpected;
+    charNonDmgRaw += groupNonDmg * hitsExpected;
   });
 
-  const total = unconditionalEV + charRaw*moveSuccess;
+  // 相手が現在「被ダメージ軽減」「完全無効化」を持っている場合、ダメージ由来の値にのみ反映する
+  // (回復・エネコロ変化等はダメージではないため軽減の対象外)
+  const oppSt = battle.status[op];
+  let totalDmgRaw = uncondDmgRaw + charDmgRaw;
+  if(oppSt.fullImmunity){
+    totalDmgRaw = 0;
+  } else if(oppSt.incomingDamageReduction > 0){
+    totalDmgRaw = Math.max(0, totalDmgRaw - oppSt.incomingDamageReduction);
+  }
+  const totalNonDmgRaw = uncondNonDmgRaw + charNonDmgRaw;
+
+  const total = (totalDmgRaw + totalNonDmgRaw) * moveSuccess;
   return {total, moveSuccess};
 }
 
@@ -2263,7 +2279,13 @@ function moveMaxPossibleDamage(move, tp, op){
     if(isDouble) groupTotal = (maxDmg+groupTotal)*2 - maxDmg;
     if(groupTotal>bestGroupBonus) bestGroupBonus = groupTotal;
   });
-  return maxDmg + bestGroupBonus;
+  const rawMax = maxDmg + bestGroupBonus;
+  // 相手が現在「被ダメージ軽減」「完全無効化」を持っている場合、最大ダメージ見積もりにも反映する
+  // (でないと「軽減されているのに勝てる」と誤判定してしまう)
+  const oppSt = battle.status[op];
+  if(oppSt.fullImmunity) return 0;
+  if(oppSt.incomingDamageReduction > 0) return Math.max(0, rawMax - oppSt.incomingDamageReduction);
+  return rawMax;
 }
 
 // ワザが「自傷ダメージ」または「自分のエネコロ減少」のリスクを持つか
