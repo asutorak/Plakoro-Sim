@@ -3064,7 +3064,7 @@ function resolveTurn(move, tp, op, player, opponent, energyDiceCount, dieIndices
   document.getElementById("rollBtn").style.display="none";
 
   if(battle.hp[op]<=0 || battle.hp[tp]<=0){
-    endBattle();
+    endBattle(tp);
     return;
   }
 
@@ -3124,9 +3124,15 @@ function renderDisablePicker(tp,op, onDone){
   });
 }
 
-function endBattle(){
+function endBattle(attackerTp){
   battle.over = true;
-  const winner = battle.hp[0]<=0 ? 1 : 0;
+  let winner;
+  if(battle.hp[0]<=0 && battle.hp[1]<=0){
+    // 自傷ダメージ等で両者同時に0になった場合、ルール上「ワザを打った側」が負けとなる
+    winner = attackerTp===0 ? 1 : 0;
+  } else {
+    winner = battle.hp[0]<=0 ? 1 : 0;
+  }
   const banner = document.getElementById("winnerBanner");
   banner.style.display="block";
   banner.textContent = `${state.players[winner].name}（トレーナー${winner+1}）の勝利！`;
