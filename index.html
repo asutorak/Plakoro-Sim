@@ -354,7 +354,7 @@
       <p style="margin:6.5px 0;">当サイトのご利用によって生じたいかなる損害についても、運営者は責任を負いかねます。</p>
       <p style="margin:6.5px 0;">権利者様より削除等のご要望があった場合は、速やかに対応いたします。</p>
     </fieldset>
-    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v1.17</p>
+    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v1.19</p>
   </div>
 </div>
 
@@ -2212,7 +2212,10 @@ function computeRealTimeEV(move, tp, op){
     }
     const maxTypeEff = g.effects.find(e=>e.kind==="opponentEnergyRollMaxTypeDamage");
     if(maxTypeEff){
-      groupDmg += MEDIAN_TOP20_DMG*0.1*maxTypeEff.value; // 簡易推定(相手ダイス構成は不明なため概算)
+      // 相手が実際に持っているダイス構成をそのまま使い、最多タイプの期待出現数を正確に計算する
+      const dc = maxTypeEff.diceCount||3;
+      const expectedMax = expectedMaxTypeCount(opponent.diceFaces, dc);
+      groupDmg += expectedMax * maxTypeEff.value;
     }
     if(g.effects.some(e=>e.kind==="mirrorLastOpponentMoveDamage")){
       const oppLastMove = state.players[op].moves.find(m=>m.name===battle.status[op].lastMoveName);
@@ -2313,6 +2316,27 @@ function realSuccessRate(costDict, diceFacesList, diceCount){
   return total ? success/total : 0;
 }
 
+// 指定したダイス構成でdiceCount個振った時の「最多タイプの出現数」の期待値を、
+// 全通り数え上げて正確に計算する(opponentEnergyRollMaxTypeDamage用)
+function expectedMaxTypeCount(diceFacesList, diceCount){
+  if(diceCount<=0) return 0;
+  let sumMax=0, total=0;
+  function rec(depth, faces){
+    if(depth===diceCount){
+      total++;
+      const flat = faces.flat();
+      const counts = {};
+      flat.forEach(t=>counts[t]=(counts[t]||0)+1);
+      sumMax += Math.max(...Object.values(counts));
+      return;
+    }
+    const die = diceFacesList[depth % diceFacesList.length];
+    for(let f=0; f<6; f++) rec(depth+1, faces.concat([die[f]]));
+  }
+  rec(0, []);
+  return total ? sumMax/total : 0;
+}
+
 // このターンにtpが振れるエネコロの数(doRollと同じロジック)
 function energyDiceCountFor(tp){
   const st = battle.status[tp];
@@ -2355,12 +2379,22 @@ function updateGachiDokuState(tp, move, success){
   st.turnsTaken++;
 }
 
+// 成功時に無条件で発生する自傷ダメージの合計(キャラコロ条件付きのものは含まない、確実に発生する分のみ)
+function unconditionalSelfDamage(move){
+  return move.moveEffects.filter(e=>e.kind==="selfDamage").reduce((s,e)=>s+e.value,0);
+}
+
 function gachiChooseMoveIdx(){
   const tp = battle.turnPlayer, op = tp===0?1:0;
   const player = state.players[tp];
   const st = battle.status[tp];
-  const available = player.moves.map((m,i)=>i).filter(i => i!==battle.lastMove[tp] && i!==st.disabledMoveIndex);
-  if(available.length===0) return null;
+  const legalMoves = player.moves.map((m,i)=>i).filter(i => i!==battle.lastMove[tp] && i!==st.disabledMoveIndex);
+  if(legalMoves.length===0) return null;
+
+  // 成功時に無条件の自傷ダメージで自分のHPが0以下になってしまうワザは、同時KOルール上
+  // 必ず負けになるため、他に選べるワザがある限り候補から除外する
+  const safeFromSelfKO = legalMoves.filter(i => battle.hp[tp] - unconditionalSelfDamage(player.moves[i]) > 0);
+  const available = safeFromSelfKO.length>0 ? safeFromSelfKO : legalMoves;
 
   const moveNames = player.moves.map(m=>m.name);
   const hasDokuGas = moveNames.includes(DOKU_GAS_NAME);
@@ -2461,6 +2495,8 @@ async function aiChooseMoveIdx(tp){
 【使用可能なワザ(前ターンと同じもの・封じられているものは除外済み)】
 ${moveDescriptions}
 ${player.strategyNote?`\n【追加の戦略指示(プレイヤーが設定したものを優先すること)】\n${player.strategyNote}\n`:""}
+【重要なルール】自傷ダメージで自分のHPが0になった場合、たとえ同じ番で相手のHPも0にできたとしても、このゲームでは「ワザを打った側(自分)が負け」というルールです。自分のHPが自傷ダメージで0以下になってしまうワザは、他に選べるワザがある限り避けてください。
+
 盤面状況(相手の残りHP・弱点・自分のエネコロで実際に成功しやすいワザ等)を踏まえて、最も勝利に近づくワザを1つ選んでください。
 以下のJSON形式のみで回答してください。他の文章は一切含めないでください。
 {"moveIndex": 選んだワザの番号, "reason": "20文字以内の簡潔な理由"}`;
