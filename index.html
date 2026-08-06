@@ -252,7 +252,10 @@
   <header>
     <span class="pokeball-icon" id="headerPokeball" style="cursor:pointer;"></span>
     <h1>プラコロシュミレーター</h1>
-    <button type="button" id="aiInfoBtn" class="tag" style="display:inline-block;min-width:79px;min-height:14.5px;border:none;box-shadow:none;cursor:pointer;margin-left:auto;">AI連携はこちら</button>
+    <div style="width:100%;display:flex;justify-content:flex-start;gap:7px;">
+      <button type="button" id="aiInfoBtn" class="tag" style="display:inline-block;min-width:79px;min-height:14.5px;border:none;box-shadow:none;cursor:pointer;">AI連携はこちら</button>
+      <button type="button" id="settingsBtn" class="tag" style="display:inline-block;min-height:14.5px;border:none;box-shadow:none;cursor:pointer;">⚙️設定</button>
+    </div>
     <label style="display:none;font-size:10px;color:var(--ink-soft);align-items:center;gap:3.5px;cursor:pointer;font-weight:500;">
       <input type="checkbox" id="evModeCheckbox" style="width:auto;margin:0;"> 期待値表示モード
     </label>
@@ -354,7 +357,38 @@
       <p style="margin:6.5px 0;">当サイトのご利用によって生じたいかなる損害についても、運営者は責任を負いかねます。</p>
       <p style="margin:6.5px 0;">権利者様より削除等のご要望があった場合は、速やかに対応いたします。</p>
     </fieldset>
-    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v1.19</p>
+    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v1.23</p>
+  </div>
+</div>
+
+<div id="settingsModalBackdrop" style="display:none;position:fixed;inset:0;background:rgba(20,15,10,0.55);z-index:200;align-items:flex-end;justify-content:center;">
+  <div style="background:var(--cream);width:100%;max-width:545.5px;max-height:85vh;overflow-y:auto;border-radius:17.5px 17.5px 0 0;padding:15.5px;box-shadow:0 -7px 26.5px rgba(0,0,0,0.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;">
+      <b style="font-size:14.5px;">⚙️設定</b>
+      <button type="button" id="settingsModalClose" class="ghost small">閉じる ✕</button>
+    </div>
+
+    <fieldset>
+      <legend>CPU自動ページ送り</legend>
+      <p class="smallnote" style="margin-top:0;">ロトムのワザ発動後、「相手の番へ」を自動でタップするまでの間隔です。</p>
+      <select id="cpuAutoAdvanceSelect" style="margin-top:5.5px;">
+        <option value="quick">しんそく</option>
+        <option value="normal" selected>ノーマル</option>
+        <option value="slow">どんそく</option>
+        <option value="off">オフ(自動送りなし)</option>
+      </select>
+    </fieldset>
+
+    <fieldset>
+      <legend>プレイヤー自動ページ送り</legend>
+      <p class="smallnote" style="margin-top:0;">自分でワザを発動した後、「相手の番へ」を自動でタップするまでの間隔です。</p>
+      <select id="playerAutoAdvanceSelect" style="margin-top:5.5px;">
+        <option value="quick">しんそく</option>
+        <option value="normal">ノーマル</option>
+        <option value="slow">どんそく</option>
+        <option value="off" selected>オフ(自動送りなし)</option>
+      </select>
+    </fieldset>
   </div>
 </div>
 
@@ -1155,6 +1189,19 @@ const PRESET_MOVES = [
 ];
 
 let state = defaultState();
+// CPU自動ページ送りの速度設定。バトル構成(state)とは独立した、UIの好み設定として保持する。
+let cpuAutoAdvanceSpeed = "normal";
+// プレイヤー(操作している側)自動ページ送りの速度設定。デフォルトはオフ。
+let playerAutoAdvanceSpeed = "off";
+const CPU_AUTO_ADVANCE_DELAYS = { quick:200, normal:600, slow:1500 };
+
+// nextBtnが表示されている状態から、指定した速度設定に従って自動タップする(offなら何もしない)
+function scheduleNextBtnAutoClick(speed){
+  if(speed==='off') return;
+  const delay = CPU_AUTO_ADVANCE_DELAYS[speed] || CPU_AUTO_ADVANCE_DELAYS.normal;
+  const nextBtn = document.getElementById('nextBtn');
+  setTimeout(()=>{ if(nextBtn.style.display !== 'none') nextBtn.click(); }, delay);
+}
 let battle = null;
 let openStatsKeys = new Set(); // 開いている「名前・タイプ・弱点・HP」欄を維持するためのキー集合
 let openEditKeys = new Set(); // 開いている「手動でカスタム編集」欄を維持するためのキー集合
@@ -2590,7 +2637,7 @@ function cpuHandlePostRoll(){
   }
   const nextBtn = document.getElementById('nextBtn');
   if(nextBtn && nextBtn.style.display !== 'none'){
-    setTimeout(()=>{ if(nextBtn.style.display !== 'none') nextBtn.click(); }, 1400);
+    scheduleNextBtnAutoClick(cpuAutoAdvanceSpeed);
   }
 }
 
@@ -3061,6 +3108,7 @@ function resolveTurn(move, tp, op, player, opponent, energyDiceCount, dieIndices
     updateHPBars();
     document.getElementById("rollBtn").style.display="none";
     document.getElementById("nextBtn").style.display="inline-block";
+    if(!player.isCPU) scheduleNextBtnAutoClick(playerAutoAdvanceSpeed);
     return;
   }
 
@@ -3093,7 +3141,8 @@ function resolveTurn(move, tp, op, player, opponent, energyDiceCount, dieIndices
   box.innerHTML = `○ ワザ成功！ ${opponent.name} に 合計${totalDmg} ダメージ！
     <div class="detaillist">${detailHtml}</div>`;
 
-  addLog(`【${player.name}】「${move.name}」使用(${iterations.length}回発動)。${opponent.name}に合計${totalDmg}ダメージ。`);
+  const logDetailsText = iterations.map(it=>it.details.join("／")).join(" → ");
+  addLog(`【${player.name}】「${move.name}」使用(${iterations.length}回発動)。${logDetailsText} → ${opponent.name}に合計${totalDmg}ダメージ。`);
   document.getElementById("turnBanner").innerHTML = `${escHtml(player.name)}の${escHtml(move.name)}！<br>${escHtml(opponent.name)}に${totalDmg}ダメージ！<span style="font-size:0.55em;">▼</span>`;
 
   updateHPBars();
@@ -3106,9 +3155,13 @@ function resolveTurn(move, tp, op, player, opponent, energyDiceCount, dieIndices
   }
 
   if(battle.pendingDisable){
-    renderDisablePicker(tp,op, ()=>{ document.getElementById("nextBtn").style.display="inline-block"; });
+    renderDisablePicker(tp,op, ()=>{
+      document.getElementById("nextBtn").style.display="inline-block";
+      if(!player.isCPU) scheduleNextBtnAutoClick(playerAutoAdvanceSpeed);
+    });
   } else {
     document.getElementById("nextBtn").style.display="inline-block";
+    if(!player.isCPU) scheduleNextBtnAutoClick(playerAutoAdvanceSpeed);
   }
 }
 
@@ -3229,6 +3282,21 @@ document.getElementById("policyModalClose").addEventListener("click", ()=>{
 document.getElementById("policyModalBackdrop").addEventListener("click", (e)=>{
   if(e.target.id==="policyModalBackdrop") document.getElementById("policyModalBackdrop").style.display = "none";
 });
+document.getElementById("settingsBtn").addEventListener("click", ()=>{
+  document.getElementById("settingsModalBackdrop").style.display = "flex";
+});
+document.getElementById("settingsModalClose").addEventListener("click", ()=>{
+  document.getElementById("settingsModalBackdrop").style.display = "none";
+});
+document.getElementById("settingsModalBackdrop").addEventListener("click", (e)=>{
+  if(e.target.id==="settingsModalBackdrop") document.getElementById("settingsModalBackdrop").style.display = "none";
+});
+document.getElementById("cpuAutoAdvanceSelect").addEventListener("change", (e)=>{
+  cpuAutoAdvanceSpeed = e.target.value;
+});
+document.getElementById("playerAutoAdvanceSelect").addEventListener("change", (e)=>{
+  playerAutoAdvanceSpeed = e.target.value;
+});
 document.getElementById("aiInfoDownloadBtn").addEventListener("click", ()=>{
   // このページ自身のHTMLをそのままファイルとして端末にダウンロードさせる。
   // モーダルが開いたままの状態がそのまま焼き込まれないよう、一旦閉じてからキャプチャする。
@@ -3241,12 +3309,16 @@ document.getElementById("aiInfoDownloadBtn").addEventListener("click", ()=>{
   const policyBackdrop = document.getElementById("policyModalBackdrop");
   const policyWasOpen = policyBackdrop.style.display;
   policyBackdrop.style.display = "none";
+  const settingsBackdrop = document.getElementById("settingsModalBackdrop");
+  const settingsWasOpen = settingsBackdrop.style.display;
+  settingsBackdrop.style.display = "none";
 
   const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
 
   modalBackdrop.style.display = wasOpen;
   movePresetBackdrop.style.display = movePresetWasOpen;
   policyBackdrop.style.display = policyWasOpen;
+  settingsBackdrop.style.display = settingsWasOpen;
 
   const blob = new Blob([htmlContent], { type: "text/html" });
   const url = URL.createObjectURL(blob);
