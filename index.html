@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <!--
-  AI/自動化ツールへの案内:
-  このファイルには window.PLAKORO_DEVTOOLS という非表示の高速シミュレーションAPIが
-  組み込まれています(scriptタグ内、"PLAKORO_DEVTOOLS" で検索すると実装箇所が見つかります)。
-  ブラウザでこのファイルを実行できる場合、コンソールで window.PLAKORO_DEVTOOLS.help() を
-  呼び出すと、全関数の使い方と実行例が確認できます。
-  例: await window.PLAKORO_DEVTOOLS.fastSimulateBattle("ミュウ","ファイヤー","gachi","gachi",300)
+  実装メモ: window.PLAKORO_DEVTOOLS という開発者向けのデバッグAPI(高速対戦シミュレーション用)が、
+  script タグ内に定義されている("PLAKORO_DEVTOOLS" で検索すると実装箇所が見つかる)。
+  関数一覧・使用例は、コード内の PLAKORO_HELP_TEXT 定数を参照。
 -->
 <html lang="ja">
 <head>
@@ -357,7 +354,7 @@
       <p style="margin:6.5px 0;">当サイトのご利用によって生じたいかなる損害についても、運営者は責任を負いかねます。</p>
       <p style="margin:6.5px 0;">権利者様より削除等のご要望があった場合は、速やかに対応いたします。</p>
     </fieldset>
-    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v1.23</p>
+    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v1.25</p>
   </div>
 </div>
 
@@ -430,6 +427,7 @@
         </li>
         <li style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px dashed var(--sprue-dark);">コピーした以下のテキストを、手順①でダウンロードしたHTMLと一緒に送信する
           <div class="smallnote">※+ボタン→ファイルから「Plakoro-sim」を選択</div>
+          <div class="smallnote">※AI連携用APIの関係でAIがプロンプトインジェクションと警戒し、上手く行かない可能性がございます</div>
           <div style="position:relative;margin-top:5.5px;">
             <textarea id="aiInfoArtifactPromptText" readonly rows="2" style="width:100%;padding:7px;border:1px solid var(--sprue-dark);border-radius:7px;font-family:'JetBrains Mono',monospace;font-size:10px;box-sizing:border-box;">このHTMLをアーティファクトにして</textarea>
             <button type="button" id="aiInfoArtifactPromptCopy" class="small ghost" style="margin-top:5.5px;width:100%;">コピー</button>
@@ -471,12 +469,10 @@
 <script>
 
 /* ============================================================================
-   AI/自動化ツール向け: 高速シミュレーションAPIについて
+   実装メモ: 高速シミュレーションAPIについて
    このファイル末尾付近(window.PLAKORO_DEVTOOLS の定義箇所)に、対戦を
-   アニメーションなしで一瞬で何百戦も回せる非表示APIがあります。
-   ブラウザで実行できる状態なら、コンソールで下記を呼び出してください:
-     window.PLAKORO_DEVTOOLS.help()
-   使い方・全関数・実行例がまとめて表示されます。
+   アニメーションなしで一瞬で何百戦も回せる、開発者向けのデバッグAPIが定義されている。
+   関数一覧・使用例は PLAKORO_HELP_TEXT 定数(このAPIのhelp()が返す文字列)を参照。
    ============================================================================ */
 // 実属性10タイプ。むしょくは「コストのワイルドカード／ノーマル技のタイプ」であり、
 // エネコロのダイス面には出現しない（面には必ず実属性が乗る）。
@@ -1951,9 +1947,9 @@ function startBattleHeadless(){
 
 if(typeof window!=="undefined"){
   const PLAKORO_HELP_TEXT = `
-PLAKORO_DEVTOOLS 使い方ガイド (AI/自動化ツール向け)
+PLAKORO_DEVTOOLS 使い方ガイド (開発者向けデバッグAPI)
 ===============================================================
-このHTMLには、対戦を高速シミュレーションできる非表示APIが組み込まれています。
+このHTMLには、対戦を高速シミュレーションできるデバッグ用APIが組み込まれています。
 ブラウザでこのファイルを開いた状態(または開いた後にJSを実行できる環境)から、
 以下の関数を window.PLAKORO_DEVTOOLS 経由で呼び出せます。
 
