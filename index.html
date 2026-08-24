@@ -34,7 +34,7 @@
   :root{
     --ui-scale:1;
     --cream:#F7F7F8; --sprue:#E2E2E5; --sprue-dark:#8C8C90;
-    --ink:#1A1A1A; --ink-soft:#5C5C60;
+    --ink:#1A1A1A; --ink-soft:#5C5C60; --border-ink:#1A1A1A;
     --fire:#EE1515; --electric:#E8B400;
     --p1:#EE1515; --danger:#C62828; --panel:#FFFFFF; --good:#1D7A3F;
     --pb-gold-dark:#EE1515;
@@ -42,10 +42,11 @@
   *{box-sizing:border-box;}
   body{
     margin:0;
+    min-height:100vh; min-height:100dvh;
     zoom:var(--ui-scale);
     background:
-      radial-gradient(circle at 18% 6%, rgba(255,255,255,0.9), transparent 30%),
-      radial-gradient(circle at 88% 94%, rgba(0,0,0,0.04), transparent 42%),
+      radial-gradient(circle at 18% 6%, var(--bg-glow-1,rgba(255,255,255,0.9)), transparent 30%),
+      radial-gradient(circle at 88% 94%, var(--bg-glow-2,rgba(0,0,0,0.04)), transparent 42%),
       var(--cream);
     color:var(--ink); font-family:'Inter',sans-serif; padding:21px 14.5px 53px;
   }
@@ -55,7 +56,7 @@
   .pokeball-icon{
     width:29.5px;height:29.5px;border-radius:50%;flex-shrink:0;overflow:hidden;
     background:linear-gradient(to bottom, #fff 0%, #fff 46%, var(--ink) 46%, var(--ink) 54%, #fff 54%, #fff 100%);
-    border:2px solid var(--ink);position:relative;box-shadow:0 1.5px 0 rgba(0,0,0,0.25);
+    border:2px solid var(--border-ink);position:relative;box-shadow:0 1.5px 0 rgba(0,0,0,0.25);
   }
   .pokeball-icon::before{
     content:"";position:absolute;top:0;left:0;right:0;height:46%;
@@ -63,13 +64,13 @@
   }
   .pokeball-icon::after{
     content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:34%;height:34%;border-radius:50%;background:#fff;border:1px solid var(--ink);box-sizing:border-box;
+    width:34%;height:34%;border-radius:50%;background:#fff;border:1px solid var(--border-ink);box-sizing:border-box;
   }
   header{
     display:flex;align-items:center;gap:12px;margin-bottom:9px;flex-wrap:wrap;
     background:#fff;
-    border:3px solid var(--ink);border-radius:14.5px;padding:12px 17.5px;
-    box-shadow:0 3.5px 0 var(--ink);
+    border:3px solid var(--border-ink);border-radius:14.5px;padding:12px 17.5px;
+    box-shadow:0 3.5px 0 var(--border-ink);
     position:relative;overflow:hidden;
   }
   header::before{
@@ -81,7 +82,7 @@
   .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;}
   @media (max-width:669px){.grid2{grid-template-columns:1fr;}}
 
-  .panel{background:var(--panel);border:2px solid var(--ink);border-radius:14.5px;padding:14.5px 16px 14.5px;position:relative;overflow:hidden;box-shadow:0 3px 0 rgba(28,26,23,0.15);}
+  .panel{background:var(--panel);border:2px solid var(--border-ink);border-radius:14.5px;padding:14.5px 16px 14.5px;position:relative;overflow:hidden;box-shadow:0 3px 0 rgba(28,26,23,0.15);}
   .panel::before{content:"";position:absolute;top:0;left:0;right:0;height:5.5px;background:var(--fire);}
   .pill{font-size:10px;font-weight:700;padding:3px 7.5px;border-radius:17.5px;color:#fff;display:inline-flex;align-items:center;gap:3.5px;}
 
@@ -92,7 +93,7 @@
   }
   input:focus,select:focus{outline:1.5px solid var(--ink);outline-offset:1px;}
   select.mon-select{
-    width:100%;padding:10.5px 12px;border:2px solid var(--ink);border-radius:10.5px;
+    width:100%;padding:10.5px 12px;border:2px solid var(--border-ink);border-radius:10.5px;
     font-family:'Baloo 2';font-size:15px;font-weight:700;background:#fff;color:var(--ink);
   }
   select.mon-select:focus{outline:1.5px solid var(--ink);outline-offset:1px;}
@@ -129,14 +130,14 @@
   }
   .orientchecks input{width:auto;}
 
-  button{font-family:'Baloo 2',sans-serif;font-weight:700;border:2px solid var(--ink);background:var(--ink);color:#fff;border-radius:10.5px;padding:9px 14.5px;cursor:pointer;font-size:11.5px;box-shadow:0 3px 0 var(--ink);transition:transform .08s ease, box-shadow .08s ease;}
+  button{font-family:'Baloo 2',sans-serif;font-weight:700;border:2px solid var(--border-ink);background:var(--ink);color:#fff;border-radius:10.5px;padding:9px 14.5px;cursor:pointer;font-size:11.5px;box-shadow:0 3px 0 var(--border-ink);transition:transform .08s ease, box-shadow .08s ease;}
   button:hover{transform:translateY(-1px);}
-  button:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink);}
+  button:active{transform:translateY(3px);box-shadow:0 0 0 var(--border-ink);}
   button.ghost{background:#fff;color:var(--ink);}
-  button.small{padding:4.5px 9px;font-size:10px;border-radius:7.5px;box-shadow:0 1.5px 0 var(--ink);}
-  button.small:active{transform:translateY(1.5px);box-shadow:0 0 0 var(--ink);}
-  button.p1btn{background:var(--p1);border-color:var(--ink);box-shadow:0 3px 0 var(--ink);}
-  button:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:0 3px 0 var(--ink);}
+  button.small{padding:4.5px 9px;font-size:10px;border-radius:7.5px;box-shadow:0 1.5px 0 var(--border-ink);}
+  button.small:active{transform:translateY(1.5px);box-shadow:0 0 0 var(--border-ink);}
+  button.p1btn{background:var(--p1);border-color:var(--border-ink);box-shadow:0 3px 0 var(--border-ink);}
+  button:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:0 3px 0 var(--border-ink);}
   .movebtn-used{background:var(--sprue)!important;}
 
   .startbar{display:flex;justify-content:center;margin:25px 0 5.5px;}
@@ -146,7 +147,7 @@
   .visible{display:block !important;}
 
   .battle-hp-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;margin-bottom:9px;}
-  .hp-card{background:#fff;border:1.5px solid var(--ink);border-radius:10.5px;padding:7px 7.5px;position:relative;overflow:visible;}
+  .hp-card{background:#fff;border:1.5px solid var(--border-ink);border-radius:10.5px;padding:7px 7.5px;position:relative;overflow:visible;}
   .hp-card-name{font-family:'Baloo 2';font-weight:800;font-size:11.5px;margin-bottom:4.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;justify-content:space-between;gap:5.5px;}
   .hp-card-name .hp-card-lv{font-family:'Baloo 2';font-weight:800;font-size:11.5px;color:var(--ink);flex-shrink:0;}
   .hpbar-outer{width:100%;height:17.5px;background:var(--sprue);border-radius:6px;overflow:hidden;position:relative;}
@@ -155,7 +156,7 @@
   .statustags{display:flex;gap:4.5px;flex-wrap:wrap;min-height:17.5px;margin-top:3.5px;}
   .statustag{font-size:9px;background:var(--ink);color:#fff;padding:1.5px 6px;border-radius:9px;font-weight:600;}
 
-  .turnbanner{text-align:left;font-family:'Baloo 2';font-weight:800;font-size:15px;margin:16px 0 9px;padding:7px 7.5px 7px 21px;border-radius:10.5px;background:#fff;border:1.5px solid var(--ink);color:var(--ink);}
+  .turnbanner{text-align:left;font-family:'Baloo 2';font-weight:800;font-size:15px;margin:16px 0 9px;padding:7px 7.5px 7px 21px;border-radius:10.5px;background:#fff;border:1.5px solid var(--border-ink);color:var(--ink);}
 
   .movepicker{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;margin:9px 0 14.5px;}
   .movebtn{border-radius:9px;padding:0;font-size:10px;text-align:left;width:100%;background:transparent;color:var(--ink);border:none;font-family:'Inter';font-weight:600;line-height:1.4;box-shadow:none;}
@@ -174,7 +175,7 @@
 
   .dicezone{display:flex;justify-content:center;gap:10.5px;flex-wrap:wrap;align-items:center;}
   .dicezone:not(:empty){margin:16px 0;min-height:67px;}
-  .die{min-width:51px;height:51px;border-radius:10.5px;border:2px solid var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;font-weight:800;background:#fff;text-align:center;line-height:1.2;padding:3.5px 5.5px;}
+  .die{min-width:51px;height:51px;border-radius:10.5px;border:2px solid var(--border-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;font-weight:800;background:#fff;text-align:center;line-height:1.2;padding:3.5px 5.5px;}
   .die.rolling{animation:spin .5s linear infinite;}
   @keyframes spin{0%{transform:rotate(0) scale(1);}50%{transform:rotate(180deg) scale(1.08);}100%{transform:rotate(360deg) scale(1);}}
   @keyframes hpShake{0%,100%{transform:translateX(0);}20%{transform:translateX(-5px);}40%{transform:translateX(4px);}60%{transform:translateX(-3px);}80%{transform:translateX(2px);}}
@@ -193,9 +194,9 @@
     pointer-events:none;z-index:10;animation:dmgPopFloat 1.1s ease-out forwards;white-space:nowrap;
   }
   @keyframes diceSuccessGlow{
-    0%{box-shadow:0 0 0 0 rgba(46,223,32,0.7);border-color:var(--ink);}
+    0%{box-shadow:0 0 0 0 rgba(46,223,32,0.7);border-color:var(--border-ink);}
     35%{box-shadow:0 0 0 6px rgba(46,223,32,0);border-color:#2EDF20;}
-    100%{box-shadow:0 0 0 0 rgba(46,223,32,0);border-color:var(--ink);}
+    100%{box-shadow:0 0 0 0 rgba(46,223,32,0);border-color:var(--border-ink);}
   }
   .die.energy-success{animation:diceSuccessGlow .7s ease-out;}
   @keyframes diceFailShake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
@@ -217,10 +218,10 @@
   .detaillist{font-family:'Inter';font-weight:500;font-size:10.5px;text-align:left;max-width:457.5px;margin:7px auto 0;color:var(--ink);}
   .detaillist div{padding:1.5px 0;}
 
-  .pickpanel{background:#FFF3D6;border:1.5px solid var(--ink);border-radius:9px;padding:12px;margin:9px auto;max-width:457.5px;text-align:center;}
+  .pickpanel{background:#FFF3D6;border:1.5px solid var(--border-ink);border-radius:9px;padding:12px;margin:9px auto;max-width:457.5px;text-align:center;}
   .pickpanel .pickpanel-title{font-weight:800;font-size:11.5px;margin-bottom:1.5px;}
   .pickpanel .opts{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:9px;}
-  .pickpanel .opts button{border-radius:17.5px;padding:7px 14.5px;font-weight:700;font-size:11px;border:1px solid var(--ink);transition:background .15s,color .15s;}
+  .pickpanel .opts button{border-radius:17.5px;padding:7px 14.5px;font-weight:700;font-size:11px;border:1px solid var(--border-ink);transition:background .15s,color .15s;}
   .pickpanel .opts button.chosen{background:var(--ink);color:#fff;}
   .pickpanel .opts button:not(.chosen){background:#fff;color:var(--ink);}
   .pickpanel-confirm{margin-top:10.5px;}
@@ -239,11 +240,44 @@
   .facecol select{margin-bottom:3.5px;font-size:10px;padding:3.5px;}
   .moveinfo{
     font-size:11.5px;color:var(--ink);line-height:2;text-align:left;font-weight:700;
-    background:#FFF3D6;border:1.5px solid var(--ink);border-radius:9px;
+    background:#FFF3D6;border:1.5px solid var(--border-ink);border-radius:9px;
     padding:9px 10.5px;margin:7px 0;
   }
   .moveinfo b{color:var(--fire);font-weight:800;}
   .movebtn .moveinfo{font-size:9px;line-height:1.5;padding:5.5px 7px;border-width:1px;margin:4.5px 0;}
+
+  /* ダークモード: :root変数の上書き+個別にハードコードされていた明色背景の調整 */
+  body.dark-mode{
+    --cream:#0A0A0C; --sprue:#3A3A40; --sprue-dark:#7A7A82;
+    --ink:#EDEDED; --ink-soft:#A8A8B0; --border-ink:#6E6E76;
+    --panel:#242429; --good:#4CC98A; --danger:#FF6B6B; --electric:#F0C94A;
+    --bg-glow-1:rgba(255,255,255,0.03); --bg-glow-2:rgba(0,0,0,0.5);
+  }
+  body.dark-mode select,
+  body.dark-mode input[type=text],
+  body.dark-mode input[type=number],
+  body.dark-mode textarea,
+  body.dark-mode .movecard,
+  body.dark-mode .grouprow,
+  body.dark-mode button.ghost,
+  body.dark-mode .hp-card,
+  body.dark-mode .turnbanner,
+  body.dark-mode .die,
+  body.dark-mode .log,
+  body.dark-mode .facecol,
+  body.dark-mode .pickpanel .opts button:not(.chosen){
+    background:var(--panel) !important; color:var(--ink);
+  }
+  body.dark-mode .effectbox,
+  body.dark-mode .orientchecks label{ background:#333338; }
+  body.dark-mode .pickpanel{ background:#3A3320; }
+  body.dark-mode .moveinfo{ background:#302E26 !important; }
+  body.dark-mode .pokeball-icon::before{ background:var(--fire); }
+  body.dark-mode .pokeball-icon::after{ background:var(--panel); }
+  body.dark-mode header{ background:var(--panel); }
+  body.dark-mode header .tag{ background:#3D3D44; color:#fff; }
+  body.dark-mode a[href="https://claude.ai"]{ background:var(--panel) !important; }
+  body.dark-mode .orient-icon-fill{ fill:#EDEDED; }
 </style>
 </head>
 <body>
@@ -315,6 +349,7 @@
       <button id="rematchBtn" class="p1btn" style="display:none">同じ設定でもう一度</button>
       <button id="restartBtn" class="p1btn" style="display:none">設定からやり直す</button>
     </div>
+    <div id="sessionRecord" style="display:none;grid-template-columns:1fr auto 1fr;align-items:center;gap:9px;margin:9px 0;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:14.5px;color:var(--ink-soft);"></div>
     <button id="rollBtn" class="p1btn" style="width:100%;">ワザをえらぶ</button>
 
     <div class="dicezone" id="diceZone"></div>
@@ -356,7 +391,7 @@
       <p style="margin:6.5px 0;">当サイトのご利用によって生じたいかなる損害についても、運営者は責任を負いかねます。</p>
       <p style="margin:6.5px 0;">権利者様より削除等のご要望があった場合は、速やかに対応いたします。</p>
     </fieldset>
-    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v1.26</p>
+    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v2.0</p>
   </div>
 </div>
 
@@ -372,7 +407,7 @@
       <p class="smallnote" style="margin-top:0;">ロトムのワザ発動後、「相手の番へ」を自動でタップするまでの間隔です。</p>
       <select id="cpuAutoAdvanceSelect" style="margin-top:5.5px;">
         <option value="quick">しんそく</option>
-        <option value="normal" selected>ノーマル</option>
+        <option value="normal" selected>ふつう</option>
         <option value="slow">どんそく</option>
         <option value="off">オフ(自動送りなし)</option>
       </select>
@@ -383,11 +418,45 @@
       <p class="smallnote" style="margin-top:0;">自分でワザを発動した後、「相手の番へ」を自動でタップするまでの間隔です。</p>
       <select id="playerAutoAdvanceSelect" style="margin-top:5.5px;">
         <option value="quick">しんそく</option>
-        <option value="normal">ノーマル</option>
+        <option value="normal">ふつう</option>
         <option value="slow">どんそく</option>
         <option value="off" selected>オフ(自動送りなし)</option>
       </select>
     </fieldset>
+
+    <fieldset>
+      <legend>ダイスロールアニメーション</legend>
+      <p class="smallnote" style="margin-top:0;">ワザ発動時、ダイスが回転する演出の速さです。</p>
+      <select id="diceAnimSelect" style="margin-top:5.5px;">
+        <option value="quick">しんそく</option>
+        <option value="normal" selected>ふつう</option>
+        <option value="slow">どんそく</option>
+        <option value="off">オフ(演出なし・即結果表示)</option>
+      </select>
+    </fieldset>
+
+    <fieldset>
+      <legend>ダークモード</legend>
+      <p class="smallnote" style="margin-top:0;">画面全体を暗い配色に切り替えます。</p>
+      <label style="font-size:10.5px;font-weight:700;display:flex;align-items:center;gap:4.5px;cursor:pointer;margin-top:5.5px;">
+        <input type="checkbox" id="darkModeToggle" style="width:auto;margin:0;"> ダークモードを有効にする
+      </label>
+    </fieldset>
+  </div>
+</div>
+
+<div id="shareModalBackdrop" style="display:none;position:fixed;inset:0;background:rgba(20,15,10,0.55);z-index:200;align-items:flex-end;justify-content:center;">
+  <div style="background:var(--cream);width:100%;max-width:545.5px;max-height:85vh;overflow-y:auto;border-radius:17.5px 17.5px 0 0;padding:15.5px;box-shadow:0 -7px 26.5px rgba(0,0,0,0.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;">
+      <b style="font-size:14.5px;">𝕏でポスト</b>
+      <button type="button" id="shareModalClose" class="ghost small">閉じる ✕</button>
+    </div>
+    <p class="smallnote" style="margin-top:0;">「ポストする」を押すと投稿画面が開きます。画像を添付したい場合は、先に「画像をダウンロード」し、投稿画面で手動で添付してください。</p>
+    <div class="row2" style="margin-top:9px;">
+      <button type="button" id="shareModalDownloadBtn" class="ghost small">画像をダウンロード</button>
+      <button type="button" id="shareModalPostBtn" class="p1btn">ポストする</button>
+    </div>
+    <img id="shareModalImg" style="width:100%;border:2px solid var(--border-ink);border-radius:9px;margin-top:9px;" alt="構築画像プレビュー">
   </div>
 </div>
 
@@ -425,7 +494,7 @@
           <button type="button" id="aiInfoDownloadBtn" class="small ghost" style="display:block;width:100%;margin-top:5.5px;">プラコロシュミレーターHTMLをダウンロード</button>
         </li>
         <li style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px dashed var(--sprue-dark);">「Claude」を起動<div class="smallnote">※無料会員でも可／※他AIには非対応</div>
-          <a href="https://claude.ai" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:5.5px;text-decoration:none;font-family:'Baloo 2',sans-serif;font-weight:700;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:7.5px;padding:4.5px 9px;font-size:10px;box-shadow:0 1.5px 0 var(--ink);">Claudeを開く</a>
+          <a href="https://claude.ai" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:5.5px;text-decoration:none;font-family:'Baloo 2',sans-serif;font-weight:700;border:2px solid var(--border-ink);background:#fff;color:var(--ink);border-radius:7.5px;padding:4.5px 9px;font-size:10px;box-shadow:0 1.5px 0 var(--border-ink);">Claudeを開く</a>
         </li>
         <li style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px dashed var(--sprue-dark);">コピーした以下のテキストを、手順①でダウンロードしたHTMLと一緒に送信する
           <div class="smallnote">※+ボタン→ファイルから「Plakoro-sim」を選択</div>
@@ -532,6 +601,30 @@ function typeSelectStyle(type){
 const ORIENTATIONS = ["立ち","さかさ","あおむけ","うつぶせ","よこむき(左)","よこむき(右)"];
 const CHAR_FACES = ORIENTATIONS;
 
+let _orientationIconSeq = 0;
+// 指定した向きを表す、黒い角丸四角から顔をくり抜いたアイコンのSVGを返す
+function orientationIconSVG(orientation, size){
+  size = size || 20;
+  _orientationIconSeq++;
+  const maskId = `oi-${_orientationIconSeq}`;
+  let transform = "";
+  let maskContent;
+  if(orientation==="あおむけ" || orientation==="うつぶせ"){
+    maskContent = `<rect x="40" y="4" width="11" height="50" fill="#000"/><circle cx="74" cy="50" r="9" fill="#000"/>`;
+    if(orientation==="うつぶせ") transform = "translate(0,100) scale(1,-1)";
+  } else {
+    maskContent = `<circle cx="35" cy="42" r="7" fill="#000"/><circle cx="65" cy="42" r="7" fill="#000"/><rect x="30" y="60" width="40" height="12" rx="3" fill="#000"/>`;
+    if(orientation==="さかさ") transform = "rotate(180 50 50)";
+    else if(orientation==="よこむき(左)") transform = "rotate(90 50 50)";
+    else if(orientation==="よこむき(右)") transform = "rotate(-90 50 50)";
+  }
+  return `<svg width="${size}" height="${size}" viewBox="0 0 100 100" style="flex-shrink:0;vertical-align:middle;" aria-label="${orientation}"><g transform="${transform}"><mask id="${maskId}"><rect x="4" y="4" width="92" height="92" rx="14" fill="#fff"/>${maskContent}</mask><rect class="orient-icon-fill" x="4" y="4" width="92" height="92" rx="14" fill="#1A1A1A" mask="url(#${maskId})"/></g></svg>`;
+}
+// 向きの配列を、アイコンを横に並べたHTMLとして返す
+function orientationIconsRowHTML(orientations, size){
+  return `<span style="display:inline-flex;align-items:center;gap:2.5px;vertical-align:middle;">【${orientations.map(o=>orientationIconSVG(o,size)).join("")}】</span>`;
+}
+
 const EFFECT_KINDS = [
   ["bonusDamage","追加ダメージ"],
   ["selfHeal","自分のHPを回復"],
@@ -556,6 +649,11 @@ const EFFECT_KINDS = [
   ["mirrorLastOpponentMoveDamage","相手が直前に使ったワザの基礎ダメージをそのまま与える"],
   ["doubleDamage","このワザで与えるダメージを2倍にする"],
   ["opponentEnergyRollMaxTypeDamage","相手にエネコロを振らせ、最多タイプの数×倍率で追加ダメージ"],
+  ["conditionalIncomingReductionLowHP","自分の残りHPが○以下なら、次の相手の番、被ダメを軽減"],
+  ["forceOpponentCharOrientation","次の相手の番、相手のキャラコロの向きを指定の向きに固定する"],
+  ["opponentMultiCharRollBonus","相手にキャラコロをN回振らせ、指定の向きが出るたびに追加ダメージ"],
+  ["selfNextCharFixedToThisRoll","次の自分の番、自分のキャラコロの向きを、このワザで出た向きに固定する"],
+  ["negateSelfDamageFromThisMove","このワザによる自分へのダメージを無効化する"],
 ];
 
 function mkEffect(kind, extra){ return Object.assign({kind, value:0}, extra||{}); }
@@ -586,6 +684,11 @@ function describeEffect(eff){
     case "mirrorLastOpponentMoveDamage": return `相手の直前の基礎ダメージをそのまま追加`;
     case "doubleDamage": return `ダメージ2倍`;
     case "opponentEnergyRollMaxTypeDamage": return `相手エネコロ${eff.diceCount||3}個の最多タイプ×${eff.value}`;
+    case "conditionalIncomingReductionLowHP": return `残りHP${eff.hpThreshold}以下なら被ダメ-${eff.value}(次の1回)`;
+    case "forceOpponentCharOrientation": return `次の相手のキャラコロを「${eff.orientation}」に固定`;
+    case "opponentMultiCharRollBonus": return `相手キャラコロ${eff.rollCount||3}回、[${(eff.orientations||[]).join("/")}]的中毎+${eff.value}`;
+    case "selfNextCharFixedToThisRoll": return `次の自分のキャラコロを、このワザの結果と同じ向きに固定`;
+    case "negateSelfDamageFromThisMove": return `このワザによる自分へのダメージを無効化`;
     default: return eff.kind;
   }
 }
@@ -602,7 +705,7 @@ function moveInfoHTML(m, withHeader, footerText){
   const costBadges = costBadgesHTML(m.cost);
   const moveEffStr = m.moveEffects.length ? m.moveEffects.map(describeEffect).join("／") : "なし";
   const charStr = m.charGroups.length
-    ? m.charGroups.map(g=>`【${g.orientations.join("/")}】${g.effects.length?g.effects.map(describeEffect).join("／"):"効果なし"}`).join("<br>")
+    ? m.charGroups.map(g=>`<div style="width:100%;">${orientationIconsRowHTML(g.orientations,17)} ${g.effects.length?g.effects.map(describeEffect).join("／"):"効果なし"}</div>`).join("")
     : "設定なし";
   const headerRow = withHeader
     ? `<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:3.5px;">
@@ -712,6 +815,12 @@ const SECONDARY_B_TYPE_OVERRIDE = {
   "フリーザー": "そら",   // エアカッター
   "サンダー": "そら",     // つばめがえし
   "ファイヤー": "そら",   // ウイングラッシュ
+};
+
+// キャラのタイプがFIXED_A_TYPESに含まれない場合、固定面Aは通常くさ(デフォルト)になるが、
+// 特定のワザ(2つ目のタイプの技)を活かすため、面Aに割り当てる実属性を上書きするテーブル
+const PRIMARY_A_TYPE_OVERRIDE = {
+  "ルカリオ": "はがね",   // メタルクロー
 };
 
 /* ===========================================================================
@@ -825,7 +934,7 @@ function buildCharacterPlayer(mon){
   if(mon==="イーブイ"){
     diceFaces = eeveeDiceFaces();
   } else if(DICE_FACE_TYPES.includes(c.type)){
-    const faceA = FIXED_A_TYPES.includes(c.type) ? c.type : FIXED_A_TYPES[0];
+    const faceA = FIXED_A_TYPES.includes(c.type) ? c.type : (PRIMARY_A_TYPE_OVERRIDE[mon] || FIXED_A_TYPES[0]);
     const faceB = FIXED_B_TYPES.includes(c.type) ? c.type : (SECONDARY_B_TYPE_OVERRIDE[mon] || FIXED_B_TYPES[0]);
     const oneDie = [[faceA],[faceB],[c.type],[c.type],[c.type,c.type],[c.type,c.type]];
     diceFaces = [0,1,2].map(()=> oneDie.map(f=>f.slice()));
@@ -839,7 +948,7 @@ function buildCharacterPlayer(mon){
     diceFaces = [0,1,2].map(()=> oneDie.map(f=>f.slice()));
   }
   return { mon, name:c.mon, type:c.type, hp:c.hp, weakness:c.weakness, moves:monMoves, isCPU:false, cpuMode:"gachi", diceIndividual:false, strategyNote:"",
-    diceFaces };
+    diceFaces, charProbs:[16,16,16,16,16,16] };
 }
 
 // イーブイ専用ダイス構成: そら主体だが「あまえる」も両立できるようにちょうを一部混ぜる
@@ -868,12 +977,12 @@ function dominantCostType(moves){
 }
 
 function defaultState(){
-  const p2 = buildCharacterPlayer("フシギダネ");
+  const p2 = buildCharacterPlayer("メタグロス");
   p2.isCPU = true; p2.cpuMode = "gachi";
   return {
     showEV:false,
     players:[
-      buildCharacterPlayer("ピカチュウ"),
+      buildCharacterPlayer("ルカリオ"),
       p2,
     ]
   };
@@ -904,6 +1013,9 @@ const PREFERRED_MOVES = {
   "サンダー":   ["ほうでん","サンダーチェイン","でんじフラッシュ","ボルトラッシュ"],
   "ファイヤー": ["ヒートブレス","ねっぷう","ほのおのつばさ","かえんほうしゃ"],
   "ミュウ":     ["サイコショット","サイコキネシス","サイケこうせん","メモリースキップ"],
+  "ルカリオ":   ["まわしげり","はっけい","はどうナックル","はどうだん"],
+  "ゲンガー":   ["ヘドロばくだん","ホロウショット","ファントムトリック","まっさかさま"],
+  "メタグロス": ["ストレートスタンプ","ワイドプレス","だいばくはつ","しそくえんざん"],
 };
 function pickPreferredMoves(mon){
   const names = PREFERRED_MOVES[mon];
@@ -927,6 +1039,9 @@ const CHARACTERS = [
   {mon:"サンダー",   type:"かみなり",hp:120, weakness:"とう"},
   {mon:"ファイヤー", type:"ほのお", hp:120, weakness:"みず"},
   {mon:"ミュウ",     type:"ちょう", hp:120, weakness:"あく"},
+  {mon:"ルカリオ",   type:"とう",   hp:120, weakness:"ほのお"},
+  {mon:"ゲンガー",   type:"あく",   hp:120, weakness:"ちょう"},
+  {mon:"メタグロス", type:"はがね", hp:120, weakness:"ほのお"},
   {mon:"コイキング(テスト用)", type:"みず", hp:120, weakness:""},
 ];
 
@@ -1175,6 +1290,53 @@ const PRESET_MOVES = [
     [mkEffect("mirrorLastOpponentMoveDamage",{})],
     [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("doubleDamage",{})]}]),
 
+  mkPreset("ルカリオ","とう","キック",{"とう":1},10,[],
+    [{orientations:["立ち","あおむけ","うつぶせ"],effects:[mkEffect("bonusDamage",{value:10})]}]),
+  mkPreset("ルカリオ","とう","はどうだん",{"とう":4},40,[],
+    [{orientations:["立ち","あおむけ","うつぶせ"],effects:[mkEffect("conditionalBonusDamageLowHP",{hpThreshold:40,value:50})]}]),
+  mkPreset("ルカリオ","とう","はどうナックル",{"とう":2},20,[],
+    [{orientations:["立ち","あおむけ","うつぶせ"],effects:[mkEffect("conditionalBonusDamageLowHP",{hpThreshold:80,value:30})]}]),
+  mkPreset("ルカリオ","とう","オーラづき",{"とう":3},30,[],
+    [{orientations:["立ち","あおむけ","よこむき(左)","よこむき(右)"],effects:[mkEffect("conditionalIncomingReductionLowHP",{hpThreshold:80,value:20})]}]),
+  mkPreset("ルカリオ","とう","はっけい",{"とう":2},20,[],
+    [{orientations:["立ち","あおむけ"],effects:[mkEffect("opponentEnergyNextTurn",{value:-1})]}]),
+  mkPreset("ルカリオ","はがね","メタルクロー",{"はがね":1,"むしょく":3},30,[],
+    [{orientations:["立ち"],effects:[mkEffect("bonusDamage",{value:40})]}]),
+  mkPreset("ルカリオ","とう","まわしげり",{"とう":3},20,[],
+    [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("bonusDamage",{value:30})]}]),
+
+  mkPreset("ゲンガー","あく","ホロウショット",{"あく":2},20,[],
+    [{orientations:["立ち","あおむけ","うつぶせ"],effects:[mkEffect("bonusDamage",{value:20})]}]),
+  mkPreset("ゲンガー","あく","かげしばり",{"あく":3},30,[],
+    [{orientations:["立ち","あおむけ","よこむき(左)","よこむき(右)"],effects:[mkEffect("opponentCharDieDisabledNextTurn",{})]}]),
+  mkPreset("ゲンガー","あく","まっさかさま",{"あく":2},20,[],
+    [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("forceOpponentCharOrientation",{orientation:"さかさ"})]}]),
+  mkPreset("ゲンガー","あく","ファントムトリック",{"あく":4},10,[],
+    [{orientations:["立ち","さかさ","あおむけ","うつぶせ"],effects:[mkEffect("opponentMultiCharRollBonus",{rollCount:3,orientations:["さかさ","うつぶせ"],value:40})]}]),
+  mkPreset("ゲンガー","あく","ガスでつつむ",{"あく":1},10,[],
+    [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("bonusDamage",{value:10})]}]),
+  mkPreset("ゲンガー","ちょう","サイコウェーブ",{"ちょう":1,"むしょく":3},30,[],
+    [{orientations:["立ち"],effects:[mkEffect("bonusDamage",{value:40})]}]),
+  mkPreset("ゲンガー","あく","ヘドロばくだん",{"あく":3},30,[],
+    [{orientations:["立ち","あおむけ","よこむき(左)","よこむき(右)"],effects:[mkEffect("bonusDamage",{value:20})]}]),
+
+  mkPreset("メタグロス","はがね","ビーム",{"はがね":1},10,[],
+    [{orientations:["立ち","あおむけ"],effects:[mkEffect("bonusDamage",{value:20})]}]),
+  mkPreset("メタグロス","はがね","しそくえんざん",{"はがね":2},20,[],
+    [{orientations:["立ち","あおむけ","よこむき(左)","よこむき(右)"],effects:[mkEffect("selfNextCharFixedToThisRoll",{})]}]),
+  mkPreset("メタグロス","はがね","コメットパンチ",{"はがね":3},20,[],
+    [{orientations:["立ち","あおむけ"],effects:[mkEffect("bonusDamage",{value:40})]}]),
+  mkPreset("メタグロス","はがね","ワイドプレス",{"はがね":2},20,[],
+    [{orientations:["よこむき(左)","よこむき(右)"],effects:[mkEffect("bonusDamage",{value:30})]}]),
+  mkPreset("メタグロス","はがね","ヘビーボンバー",{"はがね":4},40,[],
+    [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("bonusDamage",{value:40})]},
+     {orientations:["さかさ","あおむけ","うつぶせ"],effects:[mkEffect("selfEnergyNextTurn",{value:-2})]}]),
+  mkPreset("メタグロス","はがね","ストレートスタンプ",{"はがね":3},30,[],
+    [{orientations:["立ち","あおむけ","うつぶせ"],effects:[mkEffect("bonusDamage",{value:20})]}]),
+  mkPreset("メタグロス","むしょく","だいばくはつ",{"むしょく":5},100,
+    [mkEffect("selfDamage",{value:120})],
+    [{orientations:["立ち"],effects:[mkEffect("negateSelfDamageFromThisMove",{})]}]),
+
   // コイキング(テスト用): ダメージ・追加効果なし。キャラコロ判定は「立ち」のみ対象だが効果なし。
   mkPreset("コイキング(テスト用)","みず","はねる",{"みず":1},0,[],
     [{orientations:["立ち"],effects:[]}]),
@@ -1192,6 +1354,9 @@ let cpuAutoAdvanceSpeed = "normal";
 // プレイヤー(操作している側)自動ページ送りの速度設定。デフォルトはオフ。
 let playerAutoAdvanceSpeed = "off";
 const CPU_AUTO_ADVANCE_DELAYS = { quick:200, normal:600, slow:1500 };
+// ダイスロールのアニメーション速度。offの場合はアニメーションを省略し即座に結果を表示する。
+let diceAnimSpeed = "normal";
+const DICE_ANIM_DELAYS = { quick:150, normal:550, slow:1200 };
 
 // nextBtnが表示されている状態から、指定した速度設定に従って自動タップする(offなら何もしない)
 function scheduleNextBtnAutoClick(speed){
@@ -1238,6 +1403,39 @@ function normalizeDiceFaces(p){
     if(!die[4] || !die[4][0]) die[4] = [DICE_FACE_TYPES[0]];
     if(!die[5] || !die[5][0]) die[5] = [DICE_FACE_TYPES[0]];
   });
+  if(!Array.isArray(p.charProbs) || p.charProbs.length!==6){
+    p.charProbs = [16,16,16,16,16,16];
+  }
+}
+
+// 入力された(合計が100とは限らない)キャラコロの面ごとの数値を、合計100%相当の実質確率(0〜1)に正規化する
+function normalizedCharProbs(rawProbs){
+  const nums = (rawProbs||[]).map(v=>{ const n=+v; return (isFinite(n) && n>0) ? n : 0; });
+  const total = nums.reduce((a,b)=>a+b,0);
+  if(total<=0) return ORIENTATIONS.map(()=>1/6); // 全て0以下等、異常値の場合は均等割りにフォールバック
+  return nums.map(n=>n/total);
+}
+
+// 指定した向きの集合が、プレイヤーのキャラコロ確率設定でヒットする確率(0〜1)を返す
+function orientationGroupProb(orientations, charProbs){
+  const norm = normalizedCharProbs(charProbs);
+  let sum = 0;
+  (orientations||[]).forEach(o=>{
+    const idx = ORIENTATIONS.indexOf(o);
+    if(idx>=0) sum += norm[idx];
+  });
+  return sum;
+}
+
+// 正規化された確率に従って、キャラコロを1回振った結果の向きを返す
+function rollWeightedOrientation(charProbs){
+  const norm = normalizedCharProbs(charProbs);
+  let r = Math.random();
+  for(let i=0;i<ORIENTATIONS.length;i++){
+    r -= norm[i];
+    if(r<=1e-9) return ORIENTATIONS[i];
+  }
+  return ORIENTATIONS[ORIENTATIONS.length-1]; // 丸め誤差対策のフォールバック
 }
 
 function renderSetup(){
@@ -1272,7 +1470,7 @@ function renderSetup(){
           <textarea data-p="${pi}" data-scope="player" data-f="strategyNote" rows="2" placeholder="例: 相手のワザを止めることを優先してプレイして" style="width:100%;padding:6px 7.5px;border:1px solid var(--sprue-dark);border-radius:7px;font-family:inherit;font-size:11.5px;resize:vertical;">${escHtml(p.strategyNote||"")}</textarea>
         </div>`:""}
         <details class="movecard statsbox" data-statskey="${pi}" ${openStatsKeys.has(String(pi))?"open":""} style="margin-top:7px;">
-          <summary style="font-size:10.5px;">✏ 手動カスタム</summary>
+          <summary style="font-size:10.5px;">✏ 手動カスタム(キャラコロ確率調整)</summary>
           <div style="margin-top:7px;">
             <label style="margin-top:0">ポケモン名</label>
             <input type="text" data-p="${pi}" data-scope="player" data-f="name" value="${escAttr(p.name)}" ${p.mon?"disabled":""}>
@@ -1282,6 +1480,19 @@ function renderSetup(){
             </div>
             <label>HP</label>
             <input type="number" data-p="${pi}" data-scope="player" data-f="hp" value="${p.hp}" min="10" step="10">
+
+            <label>キャラコロの出現確率</label>
+            <p class="smallnote" style="margin-top:0;">各面の出現しやすさを数値で指定できます。</p>
+            <div class="row3" style="margin-top:5.5px;">
+              ${ORIENTATIONS.map((o,oi)=>`<div>
+                <label style="margin-top:0">${o}</label>
+                <input type="text" inputmode="decimal" data-p="${pi}" data-scope="charprob" data-oi="${oi}" value="${(p.charProbs&&p.charProbs[oi]!==undefined)?p.charProbs[oi]:16}">
+              </div>`).join("")}
+            </div>
+            <div class="smallnote" style="margin-top:5.5px;">${(()=>{
+              const sum = (p.charProbs||[16,16,16,16,16,16]).reduce((a,b)=>a+(+b||0),0);
+              return `現在の入力合計: ${sum.toFixed(1)}%` + (Math.abs(sum-100)>0.05 ? `(実質値として、合計100%換算で計算されます)` : "");
+            })()}</div>
         </div>
       </details>
       </fieldset>
@@ -1309,7 +1520,8 @@ function renderSetup(){
         </div>
         <div style="display:flex;gap:5.5px;margin-top:5.5px;">
           <input type="text" id="shareCode-${pi}" style="font-family:'JetBrains Mono',monospace;font-size:10px;" placeholder="ここにコードが表示されます／貼り付けてください">
-          <button type="button" class="small ghost" data-act="copyShareCode" data-p="${pi}" style="flex-shrink:0;">コピー</button>
+          <button type="button" class="small ghost" data-act="copyShareCode" data-p="${pi}" style="flex-shrink:0;min-width:58px;">コピー</button>
+          <button type="button" class="small ghost" data-act="openShareModal" data-p="${pi}" style="flex-shrink:0;min-width:58px;">𝕏</button>
         </div>
       </fieldset>
     `;
@@ -1332,6 +1544,284 @@ function weaknessSelectHTML(pi,current){
   const opts = `<option value="" ${current===""?"selected":""}>なし</option>` +
     ELEMENTAL_TYPES.map(o=>`<option value="${o}" ${o===current?"selected":""}>${o}</option>`).join("");
   return `<select data-p="${pi}" data-scope="player" data-f="weakness">${opts}</select>`;
+}
+
+// プレイヤーの構築(名前・ワザ・エネコロ構成)を1枚のカード画像としてcanvasに描画して返す
+function generateBuildCanvas(p){
+  const W = 900;
+  const diceRowCount = p.diceIndividual ? 3 : 1;
+  const cardMargin = 16, cardX = 40, cardW = W-80;
+  const groupLineH = 32;
+  // 各ワザカードの高さを、キャラコロ効果のグループ数に応じて事前に計算する
+  const cardHeights = p.moves.map(m=>{
+    const groupCount = Math.max(1, m.charGroups.length);
+    return 78 + groupCount*groupLineH + 20;
+  });
+  const movesTotalH = cardHeights.reduce((s,h)=>s+h+cardMargin, 0);
+  // ダイスが個別設定の場合、3段分表示するため縦に伸ばす
+  const H = 180 + movesTotalH + 40 + diceRowCount*140 + 70;
+  const canvas = document.createElement("canvas");
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext("2d");
+  const typeColor = TYPE_COLORS[p.type] || TYPE_COLORS["むしょく"];
+
+  // 背景
+  ctx.fillStyle = "#F7F7F8";
+  ctx.fillRect(0,0,W,H);
+
+  // ヘッダー(タイプ色の帯)
+  ctx.fillStyle = typeColor.bg;
+  ctx.fillRect(0,0,W,150);
+  ctx.fillStyle = "#fff";
+  ctx.font = "bold 56px 'Baloo 2', 'Inter', sans-serif";
+  ctx.textBaseline = "middle";
+  ctx.fillText(p.name, 40, 75);
+  ctx.font = "bold 26px 'Inter', sans-serif";
+  ctx.fillText(`タイプ: ${p.type}　HP: ${p.hp}`, 40, 125);
+
+  // ワザカード(4枚固定、高さは可変)
+  let y = 180;
+  p.moves.forEach((m,mi)=>{
+    const cardH = cardHeights[mi];
+    const mColor = TYPE_COLORS[m.type] || TYPE_COLORS["むしょく"];
+    // カード背景
+    ctx.fillStyle = "#FFFFFF";
+    ctx.strokeStyle = "#1A1A1A";
+    ctx.lineWidth = 3;
+    roundRectPath(ctx, cardX, y, cardW, cardH, 16);
+    ctx.fill(); ctx.stroke();
+
+    // ワザ名バッジ
+    ctx.fillStyle = mColor.bg;
+    roundRectPath(ctx, cardX+20, y+18, 260, 44, 22);
+    ctx.fill();
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 22px 'Baloo 2', 'Inter', sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(m.name, cardX+20+130, y+18+23);
+    ctx.textAlign = "left";
+
+    // コスト表記
+    const costText = m.cost.length ? m.cost.map(c=>`${c.type}${c.count}`).join("/") : "コストなし";
+    ctx.fillStyle = "#5C5C60";
+    ctx.font = "20px 'Inter', sans-serif";
+    ctx.fillText(`コスト: ${costText}`, cardX+300, y+46);
+
+    // ダメージ
+    ctx.fillStyle = "#EE1515";
+    ctx.font = "bold 36px 'Inter', sans-serif";
+    ctx.textAlign = "right";
+    ctx.fillText(String(m.dmg||0), cardX+cardW-24, y+50);
+    ctx.textAlign = "left";
+
+    // キャラコロ効果(グループごとに1行、アイコンを【】で囲んで表示)
+    let gy = y + 88;
+    const groups = m.charGroups.length ? m.charGroups : [{orientations:[], effects:null}];
+    groups.forEach(g=>{
+      let gx = cardX + 20;
+      ctx.fillStyle = "#1A1A1A";
+      ctx.font = "19px 'Inter', sans-serif";
+      if(g.effects===null){
+        ctx.fillText("キャラコロ: なし", gx, gy+8);
+      } else {
+        ctx.fillText("【", gx, gy+8);
+        gx += ctx.measureText("【").width;
+        const iconSize = 20;
+        g.orientations.forEach(o=>{
+          drawOrientationIconCanvas(ctx, o, gx, gy-2, iconSize, "#1A1A1A");
+          gx += iconSize + 3;
+        });
+        ctx.fillText("】", gx, gy+8);
+        gx += ctx.measureText("】").width + 4;
+        const effStr = g.effects.length ? g.effects.map(e=>describeEffect(e)).join("・") : "効果なし";
+        ctx.fillText(effStr, gx, gy+8);
+      }
+      gy += groupLineH;
+    });
+
+    y += cardH + cardMargin;
+  });
+
+  // エネコロ構成(個別設定の場合は3段、そうでなければ1段)
+  ctx.fillStyle = "#EE1515";
+  ctx.font = "bold 28px 'Baloo 2', 'Inter', sans-serif";
+  ctx.fillText("エネコロ構成", cardX, y+20);
+  y += 40;
+  const faceW = (cardW - 5*14)/6;
+  for(let di=0; di<diceRowCount; di++){
+    if(p.diceIndividual){
+      ctx.fillStyle = "#5C5C60";
+      ctx.font = "bold 18px 'Inter', sans-serif";
+      ctx.fillText(`エネコロ${di+1}`, cardX, y+12);
+      y += 26;
+    }
+    const dieFaces = p.diceFaces[di];
+    dieFaces.forEach((face,fi)=>{
+      const fx = cardX + fi*(faceW+14);
+      const fh = 90;
+      ctx.save();
+      roundRectPath(ctx, fx, y, faceW, fh, 10);
+      ctx.clip();
+      if(face.length===1){
+        const c = TYPE_COLORS[face[0]] || TYPE_COLORS["むしょく"];
+        ctx.fillStyle = c.bg;
+        ctx.fillRect(fx, y, faceW, fh);
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 18px 'Inter', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(face[0], fx+faceW/2, y+fh/2);
+      } else {
+        const c0 = TYPE_COLORS[face[0]] || TYPE_COLORS["むしょく"];
+        const c1 = TYPE_COLORS[face[1]] || TYPE_COLORS["むしょく"];
+        ctx.fillStyle = c0.bg;
+        ctx.fillRect(fx, y, faceW, fh/2);
+        ctx.fillStyle = c1.bg;
+        ctx.fillRect(fx, y+fh/2, faceW, fh/2);
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 16px 'Inter', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(face[0], fx+faceW/2, y+fh*0.25);
+        ctx.fillText(face[1], fx+faceW/2, y+fh*0.75);
+      }
+      ctx.restore();
+      ctx.strokeStyle = "#1A1A1A";
+      ctx.lineWidth = 2.5;
+      roundRectPath(ctx, fx, y, faceW, fh, 10);
+      ctx.stroke();
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+    });
+    y += 110 + (p.diceIndividual ? 14 : 0);
+  }
+
+  // フッター
+  ctx.fillStyle = "#8C8C90";
+  ctx.font = "20px 'Inter', sans-serif";
+  ctx.fillText("プラコロシュミレーター", cardX, y+20);
+
+  return canvas;
+}
+
+// canvasの内容をPNGファイルとしてダウンロードさせる
+function downloadCanvasAsPng(canvas, filename){
+  canvas.toBlob(blob=>{
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+}
+
+// Xのツイート投稿画面を、構築内容を反映したテキストで開く
+const PLAKORO_APP_URL = "https://plakoro-sim.asutora.workers.dev/";
+
+function openTweetIntent(p){
+  let code = "";
+  try{ code = encodeShareCode(p); }catch(err){ /* 構築コード生成に失敗しても、テキストのみで続行する */ }
+  const lines = [
+    `${p.name}のプラコロ構築を作成しました！`,
+    ...p.moves.map(m=>`・${m.name}`),
+    "",
+  ];
+  const buildUrl = code ? `${PLAKORO_APP_URL}?build=${encodeURIComponent(code)}` : PLAKORO_APP_URL;
+  lines.push(`今すぐお試し！⬇ ${buildUrl}`);
+  const text = lines.join("\n");
+  window.open(`https://twitter.com/intent/tweet?${new URLSearchParams({text}).toString()}`, "_blank", "noopener");
+}
+
+// URLに ?build=構築コード が付いている場合、トレーナー1にその構築を自動で読み込む
+function loadBuildFromUrlIfPresent(){
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("build");
+  if(!code) return;
+  try{
+    const p = decodeShareCode(code);
+    p.isCPU = false;
+    state.players[0] = p;
+  }catch(err){
+    console.warn("URLの構築コードの読み込みに失敗しました:", err.message);
+  }
+}
+
+// canvas上に角丸矩形のパスを作る(fill/strokeは呼び出し側で行う)
+function roundRectPath(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.arcTo(x+w, y, x+w, y+h, r);
+  ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r);
+  ctx.arcTo(x, y, x+w, y, r);
+  ctx.closePath();
+}
+
+// canvas上に、SVG版と同じ意匠の向きアイコンを1つ描画する(x,yは左上、sizeは一辺の長さ)
+function drawOrientationIconCanvas(ctx, orientation, x, y, size, fillColor){
+  const s = size/100; // 100基準のパス座標をsizeにスケールする係数
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(s, s);
+  ctx.translate(50, 50);
+  if(orientation==="さかさ") ctx.rotate(Math.PI);
+  else if(orientation==="よこむき(左)") ctx.rotate(Math.PI/2);
+  else if(orientation==="よこむき(右)") ctx.rotate(-Math.PI/2);
+  ctx.translate(-50, -50);
+  if(orientation==="うつぶせ"){ ctx.translate(0,100); ctx.scale(1,-1); }
+
+  // オフスクリーンcanvasでベース図形を描き、その上から白でくり抜き部分を上書きする
+  const off = document.createElement("canvas");
+  off.width = 100; off.height = 100;
+  const octx = off.getContext("2d");
+  roundRectPathScaled(octx, 4, 4, 92, 92, 14);
+  octx.fillStyle = fillColor;
+  octx.fill();
+  octx.globalCompositeOperation = "destination-out";
+  octx.fillStyle = "#000";
+  if(orientation==="あおむけ" || orientation==="うつぶせ"){
+    octx.fillRect(40, 4, 11, 50);
+    octx.beginPath(); octx.arc(74, 50, 9, 0, Math.PI*2); octx.fill();
+  } else {
+    octx.beginPath(); octx.arc(35, 42, 7, 0, Math.PI*2); octx.fill();
+    octx.beginPath(); octx.arc(65, 42, 7, 0, Math.PI*2); octx.fill();
+    roundRectPathScaled(octx, 30, 60, 40, 12, 3); octx.fill();
+  }
+  ctx.drawImage(off, 0, 0);
+  ctx.restore();
+}
+function roundRectPathScaled(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.arcTo(x+w, y, x+w, y+h, r);
+  ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r);
+  ctx.arcTo(x, y, x+w, y, r);
+  ctx.closePath();
+}
+
+
+// canvas上でテキストを指定幅で折り返し描画する(最大行数を超える場合は末尾を省略)
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines){
+  const chars = text.split("");
+  let line = "";
+  let lines = [];
+  chars.forEach(ch=>{
+    const test = line + ch;
+    if(ctx.measureText(test).width > maxWidth && line){
+      lines.push(line);
+      line = ch;
+    } else {
+      line = test;
+    }
+  });
+  if(line) lines.push(line);
+  if(lines.length > maxLines){
+    lines = lines.slice(0, maxLines);
+    lines[maxLines-1] = lines[maxLines-1].slice(0, -1) + "…";
+  }
+  lines.forEach((l,i)=>{ ctx.fillText(l, x, y+i*lineHeight); });
 }
 
 function moveEditorHTML(pi,mi,m,selectedMon){
@@ -1403,19 +1893,22 @@ function costRowHTML(pi,mi,ci,c){
 
 function effectRowHTML(pi,mi,scope,gi,ei,e){
   const base = `data-p="${pi}" data-m="${mi}" data-scope="effect" data-eloc="${scope}" ${gi!==null?`data-g="${gi}"`:""} data-e="${ei}"`;
-  const noValueKinds = ["disableOpponentMove","ignoreWeakness","repeatOnSuccess","opponentCharDieDisabledNextTurn","fullDamageImmunityNextHit","forceFailure","charRerollOnMatch","mirrorLastOpponentMoveDamage","doubleDamage"];
+  const noValueKinds = ["disableOpponentMove","ignoreWeakness","repeatOnSuccess","opponentCharDieDisabledNextTurn","fullDamageImmunityNextHit","forceFailure","charRerollOnMatch","mirrorLastOpponentMoveDamage","doubleDamage","forceOpponentCharOrientation","selfNextCharFixedToThisRoll","negateSelfDamageFromThisMove"];
   const needsValue = !noValueKinds.includes(e.kind);
   const needsEnergyType = e.kind==="damagePerEnergyType";
-  const needsThreshold = e.kind==="conditionalBonusDamageLowHP";
+  const needsThreshold = e.kind==="conditionalBonusDamageLowHP" || e.kind==="conditionalIncomingReductionLowHP";
   const needsMoveNameOutcome = e.kind==="conditionalPrevOwnMove";
-  const needsOrientPick = e.kind==="opponentCharRollBonus";
+  const needsOrientPick = e.kind==="opponentCharRollBonus" || e.kind==="opponentMultiCharRollBonus";
   const needsDiceCount = e.kind==="opponentEnergyRollMaxTypeDamage";
+  const needsSingleOrientPick = e.kind==="forceOpponentCharOrientation";
+  const needsRollCount = e.kind==="opponentMultiCharRollBonus";
   let valueLabel = "数値";
   if(e.kind==="damagePerEnergyType") valueLabel="倍率(×)";
   if(e.kind==="conditionalBonusDamageLowHP") valueLabel="追加ダメージ";
+  if(e.kind==="conditionalIncomingReductionLowHP") valueLabel="被ダメ軽減量";
   if(e.kind==="opponentEnergyNextTurn"||e.kind==="selfEnergyNextTurn") valueLabel="増減数";
   if(e.kind==="opponentLastMoveFailedBonus"||e.kind==="selfLastMoveFailedBonus") valueLabel="追加ダメージ";
-  if(e.kind==="opponentCharRollBonus") valueLabel="追加ダメージ";
+  if(e.kind==="opponentCharRollBonus"||e.kind==="opponentMultiCharRollBonus") valueLabel="追加ダメージ(1回あたり)";
   if(e.kind==="conditionalPrevOwnMove") valueLabel="効果の数値";
   if(e.kind==="multiCharRoll") valueLabel="振る回数";
   if(e.kind==="opponentEnergyRollMaxTypeDamage") valueLabel="倍率(×)";
@@ -1423,6 +1916,7 @@ function effectRowHTML(pi,mi,scope,gi,ei,e){
   let mainCell;
   if(needsThreshold) mainCell = `<div><label style="margin-top:0">HP閾値以下</label><input type="number" ${base} data-f="hpThreshold" value="${e.hpThreshold||0}"></div>`;
   else if(needsEnergyType) mainCell = `<div><label style="margin-top:0">対象エネルギー</label><select ${base} data-f="energyType">${DICE_FACE_TYPES.map(t=>`<option value="${t}" ${t===e.energyType?"selected":""}>${t}</option>`).join("")}</select></div>`;
+  else if(needsSingleOrientPick) mainCell = `<div><label style="margin-top:0">固定する向き</label><select ${base} data-f="orientation">${ORIENTATIONS.map(o=>`<option value="${o}" ${o===e.orientation?"selected":""}>${o}</option>`).join("")}</select></div>`;
   else if(needsValue) mainCell = `<div><label style="margin-top:0">${valueLabel}</label><input type="number" ${base} data-f="value" value="${e.value||0}"></div>`;
   else mainCell = '<div></div>';
 
@@ -1441,6 +1935,12 @@ function effectRowHTML(pi,mi,scope,gi,ei,e){
     extraRow = `<div class="orientchecks" style="margin-top:5.5px;">
       ${ORIENTATIONS.map(o=>`<label><input type="checkbox" data-act="toggleEffectOrient" data-p="${pi}" data-m="${mi}" data-eloc="${scope}" ${gi!==null?`data-g="${gi}"`:""} data-e="${ei}" data-o="${o}" ${(e.orientations||[]).includes(o)?"checked":""}> ${o}</label>`).join("")}
     </div>`;
+  }
+  if(needsRollCount){
+    extraRow = `<div class="row3" style="margin-top:5.5px;">
+      <div><label style="margin-top:0">相手が振るキャラコロの回数</label><input type="number" ${base} data-f="rollCount" value="${e.rollCount||3}" min="1" max="6"></div>
+      <div></div><div></div>
+    </div>` + extraRow;
   }
   if(needsDiceCount){
     extraRow = `<div class="row3" style="margin-top:5.5px;">
@@ -1515,7 +2015,7 @@ document.addEventListener("change", (e)=>{
           if(p.mon==="イーブイ"){
             p.diceFaces = eeveeDiceFaces();
           } else if(DICE_FACE_TYPES.includes(c.type)){
-            const faceA = FIXED_A_TYPES.includes(c.type) ? c.type : FIXED_A_TYPES[0];
+            const faceA = FIXED_A_TYPES.includes(c.type) ? c.type : (PRIMARY_A_TYPE_OVERRIDE[p.mon] || FIXED_A_TYPES[0]);
             const faceB = FIXED_B_TYPES.includes(c.type) ? c.type : (SECONDARY_B_TYPE_OVERRIDE[p.mon] || FIXED_B_TYPES[0]);
             const oneDie = [[faceA],[faceB],[c.type],[c.type],[c.type,c.type],[c.type,c.type]];
             p.diceFaces = [0,1,2].map(()=> oneDie.map(f=>f.slice()) );
@@ -1581,6 +2081,14 @@ document.addEventListener("change", (e)=>{
     renderSetup();
     return;
   }
+  if(scope==="charprob"){
+    const oi = +el.dataset.oi;
+    if(!Array.isArray(p.charProbs) || p.charProbs.length!==6) p.charProbs = [16,16,16,16,16,16];
+    const v = parseFloat(el.value);
+    p.charProbs[oi] = isFinite(v) ? v : 0;
+    renderSetup();
+    return;
+  }
   if(scope==="effect"){
     const mi=+el.dataset.m; const m=p.moves[mi];
     const eloc = el.dataset.eloc; const ei = +el.dataset.e; const f = el.dataset.f;
@@ -1595,6 +2103,9 @@ document.addEventListener("change", (e)=>{
       else if(kind==="conditionalPrevOwnMove") extra={moveName:"",outcome:"bonusDamage"};
       else if(kind==="opponentCharRollBonus") extra={orientations:[]};
       else if(kind==="opponentEnergyRollMaxTypeDamage") extra={diceCount:3};
+      else if(kind==="conditionalIncomingReductionLowHP") extra={hpThreshold:40};
+      else if(kind==="forceOpponentCharOrientation") extra={orientation:ORIENTATIONS[0]};
+      else if(kind==="opponentMultiCharRollBonus") extra={rollCount:3, orientations:[]};
       const fresh = mkEffect(kind, extra);
       if(eloc==="move") m.moveEffects[ei]=fresh; else m.charGroups[+el.dataset.g].effects[ei]=fresh;
     } else if(f==="value"){ eff.value = +el.value||0; }
@@ -1603,6 +2114,8 @@ document.addEventListener("change", (e)=>{
     else if(f==="moveName"){ eff.moveName = el.value; }
     else if(f==="outcome"){ eff.outcome = el.value; }
     else if(f==="diceCount"){ eff.diceCount = Math.max(1, +el.value||3); }
+    else if(f==="orientation"){ eff.orientation = el.value; }
+    else if(f==="rollCount"){ eff.rollCount = Math.max(1, +el.value||3); }
     renderSetup();
     return;
   }
@@ -1636,6 +2149,10 @@ document.addEventListener("click",(e)=>{
       field.select();
       try{ document.execCommand("copy"); }catch(e){}
     }
+    return;
+  }
+  else if(act==="openShareModal"){
+    openShareModal(pi);
     return;
   }
   else if(act==="loadShareCode"){
@@ -1677,7 +2194,7 @@ document.addEventListener("click",(e)=>{
 });
 
 /* ================= BATTLE LOGIC ================= */
-function freshStatus(){ return { energyModifierNextTurn:0, incomingDamageReduction:0, disabledMoveIndex:null, lastMoveName:null, lastMoveSuccess:null, charDieDisabled:false, fullImmunity:false, turnsTaken:0, gachiDokuState:"pending", reductionArmedAtTurn:null, fullImmunityArmedAtTurn:null }; }
+function freshStatus(){ return { energyModifierNextTurn:0, incomingDamageReduction:0, disabledMoveIndex:null, lastMoveName:null, lastMoveSuccess:null, charDieDisabled:false, fullImmunity:false, turnsTaken:0, gachiDokuState:"pending", reductionArmedAtTurn:null, fullImmunityArmedAtTurn:null, forcedCharOrientation:null }; }
 
 // ガチモードのEV計算で使う定数(期待値分析と同じ値)
 const RESTRICTION_BONUS = 4.78;
@@ -1787,6 +2304,42 @@ function theoreticalCalcPsychokinesis(){
 }
 
 // 1ワザ分の理論期待値を算出(EV_LOOKUP用。実ダイスではなく最適化ダイスの仮定)
+// しそくえんざんが固定できる面(立ち/あおむけ/よこむき(左)/よこむき(右))の範囲内に条件が完全に収まる、
+// メタグロスの他のワザ(プラス効果のみ)を洗い出し、「固定した場合の上乗せ期待値」の平均を動的に算出する。
+// (だいばくはつの自傷無効化は、通常のダメージ加点と性質が異なるため対象外)
+let SHISOKU_UPLIFT_CACHE_EXCL = null; // だいばくはつを含まない(固定EV用)
+let SHISOKU_UPLIFT_CACHE_INCL = null; // だいばくはつを含む(変動EV用)
+function computeShisokuEnzanUplift(includeDaibaku){
+  const cacheRef = includeDaibaku ? SHISOKU_UPLIFT_CACHE_INCL : SHISOKU_UPLIFT_CACHE_EXCL;
+  if(cacheRef !== null) return cacheRef;
+  const fixableFaces = ["立ち","あおむけ","よこむき(左)","よこむき(右)"];
+  const uplifts = [];
+  PRESET_MOVES.filter(m=>m.mon==="メタグロス" && m.name!=="しそくえんざん").forEach(m=>{
+    m.charGroups.forEach(g=>{
+      const isSubsetOfFixable = g.orientations.length>0 && g.orientations.every(o=>fixableFaces.includes(o));
+      if(!isSubsetOfFixable || g.effects.length!==1) return;
+      const p = g.orientations.length/6;
+      const bonusEff = g.effects.find(e=>e.kind==="bonusDamage");
+      if(bonusEff){
+        uplifts.push(bonusEff.value * (1-p));
+        return;
+      }
+      if(includeDaibaku){
+        const negateEff = g.effects.find(e=>e.kind==="negateSelfDamageFromThisMove");
+        if(negateEff){
+          // 無効化される自傷ダメージ量(このワザ自身のmoveEffectsにある無条件selfDamage)をVとして使う
+          const selfDmg = m.moveEffects.filter(e=>e.kind==="selfDamage").reduce((s,e)=>s+e.value,0);
+          if(selfDmg>0) uplifts.push(selfDmg * (1-p));
+        }
+      }
+    });
+  });
+  const avg = uplifts.length ? uplifts.reduce((a,b)=>a+b,0)/uplifts.length : 0;
+  if(includeDaibaku) SHISOKU_UPLIFT_CACHE_INCL = avg; else SHISOKU_UPLIFT_CACHE_EXCL = avg;
+  return avg;
+}
+
+
 function computeTheoreticalEV(m){
   if(m.name==="フレアストーム") return theoreticalCalcFlareStorm();
   if(m.name==="サイコキネシス") return theoreticalCalcPsychokinesis();
@@ -1857,6 +2410,14 @@ function computeTheoreticalEV(m){
       if(v){ if(v.dmg) groupVal += v.dmg; if(v.heal) groupVal += v.heal; }
     });
     groupVal += g.effects.reduce((s,e)=>s+theoreticalEnergyEffectValue(e),0);
+    groupVal += g.effects.filter(e=>e.kind==="conditionalIncomingReductionLowHP").reduce((s,e)=>s+e.value,0) * NEXT_HIT_DEFENSE_RELIABILITY;
+    if(g.effects.some(e=>e.kind==="forceOpponentCharOrientation")) groupVal += AVG_CHARCHECK_EV;
+    if(g.effects.some(e=>e.kind==="selfNextCharFixedToThisRoll")){
+      groupVal += (m.name==="しそくえんざん") ? computeShisokuEnzanUplift(false) : AVG_CHARCHECK_EV * 0.5;
+    }
+    const multiRollEff = g.effects.find(e=>e.kind==="opponentMultiCharRollBonus");
+    if(multiRollEff) groupVal += (multiRollEff.rollCount||3) * ((multiRollEff.orientations||[]).length/6) * multiRollEff.value;
+    if(g.effects.some(e=>e.kind==="negateSelfDamageFromThisMove")) groupVal += uncondSelfDmg;
 
     charRaw += groupVal * hitsExpected;
   });
@@ -2024,11 +2585,15 @@ async function testAIConnection(){
   }
 }
 
-async function startBattle(){
+// 「同じ設定でもう一度」を繰り返した際の連続戦績。設定変更・新規開始時にリセットする。
+let sessionRecord = {0:0, 1:0};
+
+async function startBattle(isRematch){
   if(hasDuplicateMoveNames(state.players[0]) || hasDuplicateMoveNames(state.players[1])){
     alert("同じワザを2つ以上設定しています！");
     return;
   }
+  if(!isRematch) sessionRecord = {0:0, 1:0};
   const aiPlayers = [0,1].filter(pi=>state.players[pi].isCPU && state.players[pi].cpuMode==="ai");
   if(aiPlayers.length){
     const prepStatus = document.getElementById("aiPrepStatus");
@@ -2063,6 +2628,7 @@ async function startBattle(){
   document.getElementById("winnerBanner").style.display="none";
   document.getElementById("restartBtn").style.display="none";
   document.getElementById("rematchBtn").style.display="none";
+  document.getElementById("sessionRecord").style.display="none";
   document.getElementById("bp1name").textContent = state.players[0].name;
   document.getElementById("bp2name").textContent = state.players[1].name;
   addLog(`じゃんけんの結果、${state.players[first].name}(トレーナー${first+1}) の先攻でバトルスタート！`);
@@ -2231,10 +2797,13 @@ function computeRealTimeEV(move, tp, op){
   const N = multiEff ? multiEff.value : 1;
 
   let charDmgRaw = 0, charNonDmgRaw = 0;
+  const forcedOrientation = battle.status[tp].forcedCharOrientation;
   move.charGroups.forEach(g=>{
-    const pBase = g.orientations.length/6;
+    // 次のキャラコロの向きが既に確定している場合(しそくえんざん等)、ランダムな確率ではなく
+    // 「確定している向きがこのグループに含まれるか」で0か1になる
+    const pBase = forcedOrientation!==null ? (g.orientations.includes(forcedOrientation) ? 1 : 0) : orientationGroupProb(g.orientations, player.charProbs);
     const hasReroll = g.effects.some(e=>e.kind==="charRerollOnMatch");
-    const hitsExpected = hasReroll ? (pBase/(1-pBase)) : (N*pBase);
+    const hitsExpected = hasReroll ? Math.min(20, pBase/(1-pBase)) : (N*pBase);
 
     let groupDmg = 0, groupNonDmg = 0;
     groupDmg += g.effects.filter(e=>e.kind==="bonusDamage").reduce((s,e)=>s+e.value,0);
@@ -2245,7 +2814,7 @@ function computeRealTimeEV(move, tp, op){
     if(g.effects.some(e=>e.kind==="opponentCharDieDisabledNextTurn")) groupNonDmg += AVG_CHARCHECK_EV;
     if(g.effects.some(e=>e.kind==="fullDamageImmunityNextHit")) groupNonDmg += MEDIAN_TOP20_DMG * NEXT_HIT_DEFENSE_RELIABILITY;
     const oppBonusEff = g.effects.find(e=>e.kind==="opponentCharRollBonus");
-    if(oppBonusEff){ groupDmg += oppBonusEff.value * (oppBonusEff.orientations.length/6); }
+    if(oppBonusEff){ groupDmg += oppBonusEff.value * orientationGroupProb(oppBonusEff.orientations, opponent.charProbs); }
     const damagePerEff = g.effects.find(e=>e.kind==="damagePerEnergyType");
     if(damagePerEff){
       // 実ダイスでの期待出現数を概算(そのタイプの面数/6 × ダイス数、ダブル面は2倍換算)
@@ -2265,6 +2834,26 @@ function computeRealTimeEV(move, tp, op){
     if(g.effects.some(e=>e.kind==="mirrorLastOpponentMoveDamage")){
       const oppLastMove = state.players[op].moves.find(m=>m.name===battle.status[op].lastMoveName);
       groupDmg += oppLastMove ? (oppLastMove.dmg||0) : MEDIAN_TOP20_DMG;
+    }
+    const condReduceEff = g.effects.find(e=>e.kind==="conditionalIncomingReductionLowHP");
+    if(condReduceEff && battle.hp[tp] <= condReduceEff.hpThreshold){
+      groupNonDmg += condReduceEff.value * NEXT_HIT_DEFENSE_RELIABILITY;
+    }
+    if(g.effects.some(e=>e.kind==="forceOpponentCharOrientation")) groupNonDmg += AVG_CHARCHECK_EV;
+    if(g.effects.some(e=>e.kind==="selfNextCharFixedToThisRoll")){
+      // しそくえんざん自体は専用の精密計算(他ワザの上乗せ期待値の平均)を使い、
+      // それ以外の同種効果を持つワザ(将来追加分)は暫定の簡易推定にフォールバックする
+      groupNonDmg += (move.name==="しそくえんざん") ? computeShisokuEnzanUplift(true) : AVG_CHARCHECK_EV * 0.5;
+    }
+    const multiRollEff = g.effects.find(e=>e.kind==="opponentMultiCharRollBonus");
+    if(multiRollEff){
+      const rc = multiRollEff.rollCount||3;
+      const pMatch = orientationGroupProb(multiRollEff.orientations, opponent.charProbs);
+      groupDmg += rc * pMatch * multiRollEff.value;
+    }
+    if(g.effects.some(e=>e.kind==="negateSelfDamageFromThisMove")){
+      // このワザ自体が持つ無条件の自傷ダメージを打ち消す(uncondSelfDmgとして既に引かれている分を戻す)
+      groupNonDmg += uncondSelfDmg;
     }
     const doubleEff = g.effects.some(e=>e.kind==="doubleDamage");
     g.effects.forEach(e=>{
@@ -2310,6 +2899,8 @@ function moveMaxPossibleDamage(move, tp, op){
     if(damagePerEff) bonus += damagePerEff.value*6; // 最大6個出た場合を想定
     const maxTypeEff = g.effects.find(e=>e.kind==="opponentEnergyRollMaxTypeDamage");
     if(maxTypeEff) bonus += maxTypeEff.value*(maxTypeEff.diceCount||3);
+    const multiRollEff = g.effects.find(e=>e.kind==="opponentMultiCharRollBonus");
+    if(multiRollEff) bonus += multiRollEff.value*(multiRollEff.rollCount||3); // 全て的中した場合を想定
     if(g.effects.some(e=>e.kind==="mirrorLastOpponentMoveDamage")){
       const oppLastMove = state.players[op].moves.find(m=>m.name===battle.status[op].lastMoveName);
       bonus += oppLastMove ? (oppLastMove.dmg||0) : 0;
@@ -2744,14 +3335,14 @@ document.getElementById("nextBtn").addEventListener("click", ()=>{
   battle.rolledThisTurn = false;
   renderBattle();
 });
-document.getElementById("startBtn").addEventListener("click", startBattle);
+document.getElementById("startBtn").addEventListener("click", ()=>{ startBattle(false); });
 document.getElementById("restartBtn").addEventListener("click", ()=>{
   document.getElementById("battlePhase").style.display="none";
   document.querySelector("header").style.display="";
   document.getElementById("setupPhase").classList.add("visible");
 });
 document.getElementById("rematchBtn").addEventListener("click", ()=>{
-  startBattle();
+  startBattle(true);
 });
 document.getElementById("backToSetupBtn").addEventListener("click", ()=>{
   document.getElementById("battlePhase").style.display="none";
@@ -2835,14 +3426,22 @@ function startRollAnimation(move, tp, op, player, opponent, energyDiceCount, die
   // ロール開始と同時に、ワザ選択ボタンをその場で無効化(再描画を待たず即座に反映)
   grayOutMoveButtonsAndAllowAdvance();
 
-  const zone = document.getElementById("diceZone");
-  zone.innerHTML = `<div class="die chardie rolling">?</div>` + Array.from({length:energyDiceCount}).map(()=>`<div class="die rolling">?</div>`).join("");
   document.getElementById("rollBtn").style.display="none";
   document.getElementById("rollBtn").disabled = true;
 
+  if(diceAnimSpeed==='off'){
+    // アニメーション省略: 回転表示を出さず即座に結果を計算する
+    resolveTurn(move, tp, op, player, opponent, energyDiceCount, dieIndices);
+    return;
+  }
+
+  const zone = document.getElementById("diceZone");
+  zone.innerHTML = `<div class="die chardie rolling">?</div>` + Array.from({length:energyDiceCount}).map(()=>`<div class="die rolling">?</div>`).join("");
+
+  const delay = DICE_ANIM_DELAYS[diceAnimSpeed] || DICE_ANIM_DELAYS.normal;
   setTimeout(()=>{
     resolveTurn(move, tp, op, player, opponent, energyDiceCount, dieIndices);
-  }, 550);
+  }, delay);
 }
 
 function applyEffect(eff, ctx){
@@ -2855,6 +3454,7 @@ function applyEffect(eff, ctx){
       ctx.details.push(`自分のHPを${eff.value}回復`); break;
     case "selfDamage":
       battle.hp[ctx.tp] = Math.max(0, battle.hp[ctx.tp]-eff.value);
+      ctx.selfDamageAppliedThisTurn = (ctx.selfDamageAppliedThisTurn||0) + eff.value;
       ctx.details.push(`自分にも${eff.value}ダメージ`); break;
     case "opponentEnergyNextTurn":
       battle.status[ctx.op].energyModifierNextTurn += eff.value;
@@ -2916,7 +3516,7 @@ function applyEffect(eff, ctx){
       break;
     }
     case "opponentCharRollBonus":{
-      const oppFace = rollFace(CHAR_FACES);
+      const oppFace = rollWeightedOrientation(state.players[ctx.op].charProbs);
       if((eff.orientations||[]).includes(oppFace)){
         ctx.dmgRef.v += eff.value;
         ctx.details.push(`相手のキャラコロが「${oppFace}」→ +${eff.value}ダメージ`);
@@ -2983,6 +3583,44 @@ function applyEffect(eff, ctx){
       ctx.details.push(`相手のエネコロ(${dc}個)結果: ${flat.map(f=>f).join("・")||"(なし)"} → 最多タイプ「${maxType||"なし"}」${maxCount}個 × ${eff.value} = +${add}ダメージ`);
       break;
     }
+    case "conditionalIncomingReductionLowHP":
+      if(ctx.hpBeforeEffects <= eff.hpThreshold){
+        battle.status[ctx.tp].incomingDamageReduction += eff.value;
+        battle.status[ctx.tp].reductionArmedAtTurn = battle.turnCounter;
+        ctx.details.push(`自分の残りHPが${eff.hpThreshold}以下 → 次の相手の番、被ダメを${eff.value}軽減`);
+      } else {
+        ctx.details.push(`(自分の残りHPが${eff.hpThreshold}以下ではないため条件付き効果は不発)`);
+      }
+      break;
+    case "forceOpponentCharOrientation":
+      battle.status[ctx.op].forcedCharOrientation = eff.orientation;
+      ctx.details.push(`次の相手の番、相手のキャラコロの向きを「${eff.orientation}」に固定する`);
+      break;
+    case "opponentMultiCharRollBonus":{
+      const rc = eff.rollCount||3;
+      const rolls = [];
+      for(let i=0;i<rc;i++){ rolls.push(rollWeightedOrientation(state.players[ctx.op].charProbs)); }
+      const matchCount = rolls.filter(f=>(eff.orientations||[]).includes(f)).length;
+      const add = matchCount*eff.value;
+      ctx.dmgRef.v += add;
+      ctx.details.push(`相手のキャラコロ(${rc}回): ${rolls.join("・")} → [${(eff.orientations||[]).join("/")}]が${matchCount}回的中 × ${eff.value} = +${add}ダメージ`);
+      break;
+    }
+    case "selfNextCharFixedToThisRoll":{
+      const lastFace = (ctx.charFaces && ctx.charFaces.length) ? ctx.charFaces[ctx.charFaces.length-1] : null;
+      if(lastFace){
+        battle.status[ctx.tp].forcedCharOrientation = lastFace;
+        ctx.details.push(`次の自分の番、自分のキャラコロの向きを「${lastFace}」に固定する`);
+      }
+      break;
+    }
+    case "negateSelfDamageFromThisMove":
+      if(ctx.selfDamageAppliedThisTurn){
+        battle.hp[ctx.tp] = Math.min(state.players[ctx.tp].hp, battle.hp[ctx.tp]+ctx.selfDamageAppliedThisTurn);
+        ctx.details.push(`このワザによる自分への${ctx.selfDamageAppliedThisTurn}ダメージを無効化した`);
+        ctx.selfDamageAppliedThisTurn = 0;
+      }
+      break;
   }
 }
 
@@ -3019,7 +3657,13 @@ function runAttempt(move, tp, op, player, opponent, energyDiceCount, dieIndices)
     let guard2 = 0;
     while(keepRolling && guard2<20){
       guard2++;
-      const face = rollFace(CHAR_FACES);
+      let face;
+      if(guard2===1 && battle.status[tp].forcedCharOrientation){
+        face = battle.status[tp].forcedCharOrientation;
+        battle.status[tp].forcedCharOrientation = null; // 消費
+      } else {
+        face = rollWeightedOrientation(player.charProbs);
+      }
       charFaces.push(face);
       let matchedThis = false;
       let thisRollEffects = [];
@@ -3054,7 +3698,7 @@ function runAttempt(move, tp, op, player, opponent, energyDiceCount, dieIndices)
   if(!ignoreWeakness && move.type===opponent.weakness){ dmgRef.v += 20; details.push("弱点タイプ一致で+20"); }
   else if(ignoreWeakness && move.type===opponent.weakness){ details.push("弱点タイプ一致だが、このワザは弱点を計算しない"); }
 
-  const ctx = {tp,op,dmgRef,details,energyFlat,hpBeforeEffects};
+  const ctx = {tp,op,dmgRef,details,energyFlat,hpBeforeEffects,charFaces};
   move.moveEffects.forEach(eff=>{ if(eff.kind!=="multiCharRoll") applyEffect(eff, ctx); else details.push(`キャラコロを合計${eff.value}回振る`); });
 
   if(charFaces.length===0){
@@ -3188,7 +3832,7 @@ function renderDice(charFaces, rolledFaces, success){
   }
   const energyClass = success===true ? "energy-success" : (success===false ? "energy-fail" : "");
   zone.innerHTML = charHtml +
-    rolledFaces.map(f=>`<div class="die ${energyClass}" style="border-color:var(--ink);gap:3px;">${f.map(t=>energyIconHTML(t,21)).join("")}</div>`).join("");
+    rolledFaces.map(f=>`<div class="die ${energyClass}" style="border-color:var(--border-ink);gap:3px;">${f.map(t=>energyIconHTML(t,21)).join("")}</div>`).join("");
 }
 
 
@@ -3227,6 +3871,11 @@ function endBattle(attackerTp){
   addLog(`バトル終了。${state.players[winner].name}の勝利！`);
   document.getElementById("restartBtn").style.display="inline-block";
   document.getElementById("rematchBtn").style.display="inline-block";
+
+  sessionRecord[winner]++;
+  const recordEl = document.getElementById("sessionRecord");
+  recordEl.style.display = "grid";
+  recordEl.innerHTML = `<span style="text-align:right;">${escHtml(state.players[0].name)}</span><span class="mono">${sessionRecord[0]} - ${sessionRecord[1]}</span><span style="text-align:left;">${escHtml(state.players[1].name)}</span>`;
 }
 
 document.getElementById("evModeCheckbox").addEventListener("change", (e)=>{
@@ -3295,6 +3944,39 @@ document.getElementById("cpuAutoAdvanceSelect").addEventListener("change", (e)=>
 document.getElementById("playerAutoAdvanceSelect").addEventListener("change", (e)=>{
   playerAutoAdvanceSpeed = e.target.value;
 });
+document.getElementById("diceAnimSelect").addEventListener("change", (e)=>{
+  diceAnimSpeed = e.target.value;
+});
+document.getElementById("darkModeToggle").addEventListener("change", (e)=>{
+  document.body.classList.toggle("dark-mode", e.target.checked);
+});
+
+// Xシェア用モーダルを開き、構築画像を生成してプレビュー表示する
+function openShareModal(pi){
+  const p = state.players[pi];
+  const canvas = generateBuildCanvas(p);
+  const backdrop = document.getElementById("shareModalBackdrop");
+  document.getElementById("shareModalImg").src = canvas.toDataURL("image/png");
+  backdrop.dataset.pi = pi;
+  backdrop.style.display = "flex";
+}
+document.getElementById("shareModalClose").addEventListener("click", ()=>{
+  document.getElementById("shareModalBackdrop").style.display = "none";
+});
+document.getElementById("shareModalBackdrop").addEventListener("click", (e)=>{
+  if(e.target.id==="shareModalBackdrop") document.getElementById("shareModalBackdrop").style.display = "none";
+});
+document.getElementById("shareModalDownloadBtn").addEventListener("click", ()=>{
+  const pi = +document.getElementById("shareModalBackdrop").dataset.pi;
+  const p = state.players[pi];
+  const canvas = generateBuildCanvas(p);
+  downloadCanvasAsPng(canvas, `${p.name}_構築.png`);
+});
+document.getElementById("shareModalPostBtn").addEventListener("click", ()=>{
+  const pi = +document.getElementById("shareModalBackdrop").dataset.pi;
+  openTweetIntent(state.players[pi]);
+});
+
 document.getElementById("aiInfoDownloadBtn").addEventListener("click", ()=>{
   // このページ自身のHTMLをそのままファイルとして端末にダウンロードさせる。
   // モーダルが開いたままの状態がそのまま焼き込まれないよう、一旦閉じてからキャプチャする。
@@ -3310,6 +3992,9 @@ document.getElementById("aiInfoDownloadBtn").addEventListener("click", ()=>{
   const settingsBackdrop = document.getElementById("settingsModalBackdrop");
   const settingsWasOpen = settingsBackdrop.style.display;
   settingsBackdrop.style.display = "none";
+  const shareBackdrop = document.getElementById("shareModalBackdrop");
+  const shareWasOpen = shareBackdrop.style.display;
+  shareBackdrop.style.display = "none";
 
   const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
 
@@ -3317,6 +4002,7 @@ document.getElementById("aiInfoDownloadBtn").addEventListener("click", ()=>{
   movePresetBackdrop.style.display = movePresetWasOpen;
   policyBackdrop.style.display = policyWasOpen;
   settingsBackdrop.style.display = settingsWasOpen;
+  shareBackdrop.style.display = shareWasOpen;
 
   const blob = new Blob([htmlContent], { type: "text/html" });
   const url = URL.createObjectURL(blob);
@@ -3341,6 +4027,23 @@ document.getElementById("aiInfoArtifactPromptCopy").addEventListener("click", ()
   try{ document.execCommand("copy"); }catch(e){}
 });
 
+// コンテンツの高さが変わるたびに、埋め込み先(Artifactビューア等)に通知する。
+// これにより、対戦中の表示切り替えで高さが増減しても、表示枠が古いサイズのまま
+// 残ってしまう問題を緩和する。
+function notifyHeightChange(){
+  window.dispatchEvent(new Event("resize"));
+  try{
+    window.parent.postMessage({ type:"resize", height: document.body.scrollHeight }, "*");
+  }catch(e){}
+}
+let heightNotifyTimer = null;
+function scheduleHeightNotify(){
+  if(heightNotifyTimer) clearTimeout(heightNotifyTimer);
+  heightNotifyTimer = setTimeout(notifyHeightChange, 60);
+}
+new MutationObserver(scheduleHeightNotify).observe(document.body, { childList:true, subtree:true, attributes:true, characterData:true });
+
+loadBuildFromUrlIfPresent();
 renderSetup();
 </script>
 </body>
