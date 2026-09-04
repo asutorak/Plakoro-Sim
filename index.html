@@ -8,25 +8,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>プラコロシュミレーター</title>
+<title>プラコロシミュレータ</title>
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <!-- OGP設定: SNS等でリンクをシェアした際のプレビュー表示用。
      og:image・og:urlは実際に公開するドメインに合わせて書き換えてください。
-     og-image2.png はこのHTMLと同じ階層に配置することを想定しています。 -->
-<meta property="og:title" content="プラコロシュミレーター">
-<meta property="og:description" content="ポケモン・ワザ・エネコロを自由にカスタマイズし対戦できる、「プラコロ」のシュミレーター。AI連携により、AIとの対戦や戦績集計も可能！">
+     og-image.png はこのHTMLと同じ階層に配置することを想定しています。 -->
+<meta property="og:title" content="プラコロシミュレータ">
+<meta property="og:description" content="ポケモン・ワザ・エネコロを自由にカスタマイズし対戦できる、「プラコロ」のシミュレーター。AI連携により、AIとの対戦や戦績集計も可能！">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://plakoro-sim.asutora.workers.dev/">
-<meta property="og:image" content="https://plakoro-sim.asutora.workers.dev/og-image2.png">
+<meta property="og:image" content="https://plakoro-sim.asutora.workers.dev/og-image.png">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="プラコロシュミレーター">
-<meta name="twitter:description" content="ポケモン・ワザ・エネコロを自由にカスタマイズし対戦できる、「プラコロ」のシュミレーター。AI連携により、AIとの対戦や戦績集計も可能！">
-<meta name="twitter:image" content="https://plakoro-sim.asutora.workers.dev/og-image2.png">
-<meta name="description" content="ポケモン・ワザ・エネコロを自由にカスタマイズし対戦できる、「プラコロ」のシュミレーター。AI連携により、AIとの対戦や戦績集計も可能！">
+<meta name="twitter:title" content="プラコロシミュレータ">
+<meta name="twitter:description" content="ポケモン・ワザ・エネコロを自由にカスタマイズし対戦できる、「プラコロ」のシミュレーター。AI連携により、AIとの対戦や戦績集計も可能！">
+<meta name="twitter:image" content="https://plakoro-sim.asutora.workers.dev/og-image.png">
+<meta name="description" content="ポケモン・ワザ・エネコロを自由にカスタマイズし対戦できる、「プラコロ」のシミュレーター。AI連携により、AIとの対戦や戦績集計も可能！">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -284,7 +284,7 @@
 <div class="wrap">
   <header>
     <span class="pokeball-icon" id="headerPokeball" style="cursor:pointer;"></span>
-    <h1>プラコロシュミレーター</h1>
+    <h1>プラコロシミュレータ</h1>
     <div style="width:100%;display:flex;justify-content:flex-start;gap:7px;">
       <button type="button" id="aiInfoBtn" class="tag" style="display:inline-block;min-width:79px;min-height:14.5px;border:none;box-shadow:none;cursor:pointer;">AI連携はこちら</button>
       <button type="button" id="settingsBtn" class="tag" style="display:inline-block;min-height:14.5px;border:none;box-shadow:none;cursor:pointer;">⚙️設定</button>
@@ -386,12 +386,12 @@
 
     <fieldset>
       <legend>免責事項</legend>
-      <p style="margin:6.5px 0;">当サイト「プラコロシュミレーター」は、個人が制作した非公式のファンメイド作品です。</p>
+      <p style="margin:6.5px 0;">当サイト「プラコロシミュレータ」は、個人が制作した非公式のファンメイド作品です。</p>
       <p style="margin:6.5px 0;">「ポケットモンスター」「ポケモン」等の名称・関連要素は、株式会社ポケモン、任天堂株式会社、株式会社ゲームフリークの登録商標または著作物です。当サイトはこれらの権利者様とは一切関係がなく、公式に承認されたものではありません。</p>
       <p style="margin:6.5px 0;">当サイトのご利用によって生じたいかなる損害についても、運営者は責任を負いかねます。</p>
       <p style="margin:6.5px 0;">権利者様より削除等のご要望があった場合は、速やかに対応いたします。</p>
     </fieldset>
-    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v2.0</p>
+    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v2.07</p>
   </div>
 </div>
 
@@ -442,6 +442,14 @@
         <input type="checkbox" id="darkModeToggle" style="width:auto;margin:0;"> ダークモードを有効にする
       </label>
     </fieldset>
+
+    <fieldset>
+      <legend>ワザ発動確率の表示</legend>
+      <p class="smallnote" style="margin-top:0;">対戦中のワザ選択画面で、その時点のエネコロ構成・振れる数から計算した各ワザの発動成功率を表示します。</p>
+      <label style="font-size:10.5px;font-weight:700;display:flex;align-items:center;gap:4.5px;cursor:pointer;margin-top:5.5px;">
+        <input type="checkbox" id="successRateToggle" style="width:auto;margin:0;"> 発動確率を表示する
+      </label>
+    </fieldset>
   </div>
 </div>
 
@@ -482,7 +490,7 @@
     <fieldset>
       <legend>AI連携で出来ること</legend>
       <ul style="margin:3.5px 0;padding-left:1.2em;line-height:1.9;">
-        <li>100回単位の高速対戦シュミレート</li>
+        <li>100回単位の高速対戦シミュレート</li>
         <li>好きな戦術で戦わせられるAIモード</li>
       </ul>
     </fieldset>
@@ -491,7 +499,7 @@
       <legend>連携手順</legend>
       <ol style="margin:3.5px 0;padding-left:1.3em;line-height:2.1;">
         <li style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px dashed var(--sprue-dark);">HTMLをダウンロード
-          <button type="button" id="aiInfoDownloadBtn" class="small ghost" style="display:block;width:100%;margin-top:5.5px;">プラコロシュミレーターHTMLをダウンロード</button>
+          <button type="button" id="aiInfoDownloadBtn" class="small ghost" style="display:block;width:100%;margin-top:5.5px;">プラコロシミュレータHTMLをダウンロード</button>
         </li>
         <li style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px dashed var(--sprue-dark);">「Claude」を起動<div class="smallnote">※無料会員でも可／※他AIには非対応</div>
           <a href="https://claude.ai" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:5.5px;text-decoration:none;font-family:'Baloo 2',sans-serif;font-weight:700;border:2px solid var(--border-ink);background:#fff;color:var(--ink);border-radius:7.5px;padding:4.5px 9px;font-size:10px;box-shadow:0 1.5px 0 var(--border-ink);">Claudeを開く</a>
@@ -504,13 +512,13 @@
             <button type="button" id="aiInfoArtifactPromptCopy" class="small ghost" style="margin-top:5.5px;width:100%;">コピー</button>
           </div>
         </li>
-        <li>生成されたリンクからプラコロシュミレーターが開ければOK！</li>
+        <li>生成されたリンクからプラコロシミュレータが開ければOK！</li>
       </ol>
     </fieldset>
 
     <fieldset>
-      <legend>高速対戦シュミレート</legend>
-      <p style="margin:3.5px 0;line-height:1.8;">対戦させたいポケモンや対戦回数をチャットで送信すれば、超高速で対戦をシュミレート！</p>
+      <legend>高速対戦シミュレート</legend>
+      <p style="margin:3.5px 0;line-height:1.8;">対戦させたいポケモンや対戦回数をチャットで送信すれば、超高速で対戦をシミュレート！</p>
       <label style="margin-top:0">推奨プロンプトはこちら</label>
       <div style="position:relative;margin-top:5.5px;">
         <textarea id="aiInfoPromptText" readonly rows="12" style="width:100%;padding:7px;border:1px solid var(--sprue-dark);border-radius:7px;font-family:'JetBrains Mono',monospace;font-size:10px;box-sizing:border-box;">推奨されているコンソールAPIを使用し、以下の設定で300回対戦した時の「勝率」「各ワザの使用回数/成功率/総ダメージ」を、対戦ログを元に報告して
@@ -530,7 +538,7 @@
 
     <fieldset>
       <legend>AIモード対戦</legend>
-      <p style="margin:3.5px 0;line-height:1.8;">連携手順④で開いたプラコロシュミレーターで、「ロトムにまかせる」→「AIモード」を選択</p>
+      <p style="margin:3.5px 0;line-height:1.8;">連携手順④で開いたプラコロシミュレータで、「ロトムにまかせる」→「AIモード」を選択</p>
       <p style="margin:3.5px 0;line-height:1.8;">必要に応じて戦略メモを書き、そのまま対戦すればAIと対戦可能！</p>
       <p class="smallnote" style="margin:3.5px 0;">※対戦開始に時間がかかるので注意</p>
     </fieldset>
@@ -701,17 +709,21 @@ function evBadge(m){
   return ` <span class="pill" style="background:var(--fire);">期待値:${val.toFixed(1)}</span>`;
 }
 
-function moveInfoHTML(m, withHeader, footerText){
+function moveInfoHTML(m, withHeader, footerText, successRatePct){
   const costBadges = costBadgesHTML(m.cost);
   const moveEffStr = m.moveEffects.length ? m.moveEffects.map(describeEffect).join("／") : "なし";
   const charStr = m.charGroups.length
     ? m.charGroups.map(g=>`<div style="width:100%;">${orientationIconsRowHTML(g.orientations,17)} ${g.effects.length?g.effects.map(describeEffect).join("／"):"効果なし"}</div>`).join("")
     : "設定なし";
+  const rateHTML = (successRatePct!==null && successRatePct!==undefined)
+    ? `<div style="font-size:9.5px;font-weight:700;color:var(--fire);white-space:nowrap;">発動確率 ${successRatePct}%</div>`
+    : "";
   const headerRow = withHeader
     ? `<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:3.5px;">
         <div style="font-size:13px;font-weight:800;">${moveNameBadge(m)}${evBadge(m)}</div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;">
           <div style="display:flex;gap:6px;">${costBadges}</div>
+          ${rateHTML}
           <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:23px;color:var(--danger);-webkit-text-stroke:2.5px #fff;paint-order:stroke fill;text-shadow:0 0 3px #fff,0 0 3px #fff;line-height:1;">${m.dmg||0}</div>
         </div>
       </div>`
@@ -809,7 +821,7 @@ function mkMove(type,name,cost,dmg,moveEffects,charGroups){
 // 主力タイプ以外に、B面タイプに配置可能なワザ(最も期待値が高いもの)を持つポケモンのB面タイプ上書き用テーブル
 // (存在しない場合はデフォルトのFIXED_B_TYPES[0]のまま)
 const SECONDARY_B_TYPE_OVERRIDE = {
-  "フシギダネ": "あく",   // アシッドボム
+  "フシギダネ": "はがね", // アシッドボム
   "ゼニガメ": "とう",     // マッドショット
   "カイロス": "とう",     // かわらわり
   "フリーザー": "そら",   // エアカッター
@@ -1015,7 +1027,7 @@ const PREFERRED_MOVES = {
   "ミュウ":     ["サイコショット","サイコキネシス","サイケこうせん","メモリースキップ"],
   "ルカリオ":   ["まわしげり","はっけい","はどうナックル","はどうだん"],
   "ゲンガー":   ["ヘドロばくだん","ホロウショット","ファントムトリック","まっさかさま"],
-  "メタグロス": ["ストレートスタンプ","ワイドプレス","だいばくはつ","しそくえんざん"],
+  "メタグロス": ["ストレートスタンプ","ワイドプレス","コメットパンチ","しそくえんざん"],
 };
 function pickPreferredMoves(mon){
   const names = PREFERRED_MOVES[mon];
@@ -1059,7 +1071,7 @@ const PRESET_MOVES = [
      {orientations:["さかさ","うつぶせ"],effects:[mkEffect("selfDamage",{value:30})]}]),
   mkPreset("フシギダネ","くさ","ギガドレイン",{"くさ":4},40,[],
     [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("selfHeal",{value:40})]}]),
-  mkPreset("フシギダネ","あく","アシッドボム",{"あく":1,"むしょく":2},10,[],
+  mkPreset("フシギダネ","はがね","アシッドボム",{"はがね":1,"むしょく":2},10,[],
     [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("bonusDamage",{value:20})]}]),
   mkPreset("ヒトカゲ","ほのお","ひのこ",{"ほのお":2},20,[],
     [{orientations:["立ち","あおむけ"],effects:[mkEffect("bonusDamage",{value:30})]}]),
@@ -1067,7 +1079,7 @@ const PRESET_MOVES = [
     [{orientations:["立ち","あおむけ"],effects:[mkEffect("selfEnergyNextTurn",{value:2})]}]),
   mkPreset("ヒトカゲ","ほのお","かえんほうしゃ",{"ほのお":3},40,[],
     [{orientations:["立ち","あおむけ"],effects:[mkEffect("bonusDamage",{value:20})]},
-     {orientations:["さかさ","よこむき(左)","よこむき(右)"],effects:[mkEffect("selfEnergyNextTurn",{value:-2})]}]),
+     {orientations:["さかさ","うつぶせ","よこむき(左)","よこむき(右)"],effects:[mkEffect("selfEnergyNextTurn",{value:-2})]}]),
   mkPreset("ヒトカゲ","ほのお","ほのおのキバ",{"ほのお":4},30,[],
     [{orientations:["立ち","あおむけ","うつぶせ"],effects:[mkEffect("bonusDamage",{value:30})]}]),
   mkPreset("ヒトカゲ","ほのお","フレアストーム",{"むしょく":5},20,[],
@@ -1218,7 +1230,7 @@ const PRESET_MOVES = [
   mkPreset("フリーザー","みず","ぜったいれいど",{"みず":4},40,[],
     [{orientations:["立ち","あおむけ"],effects:[mkEffect("opponentEnergyNextTurn",{value:-2}),mkEffect("opponentCharDieDisabledNextTurn",{})]}]),
   mkPreset("フリーザー","そら","そらをとぶ",{"そら":1,"むしょく":2},30,[],
-    [{orientations:["よこむき(左)","よこむき(右)"],effects:[mkEffect("fullDamageImmunityNextHit",{})]},
+    [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("fullDamageImmunityNextHit",{})]},
      {orientations:["あおむけ","うつぶせ","さかさ"],effects:[mkEffect("forceFailure",{})]}]),
 
   mkPreset("サンダー","かみなり","でんじフラッシュ",{"かみなり":2},20,[],
@@ -1243,7 +1255,7 @@ const PRESET_MOVES = [
   mkPreset("サンダー","かみなり","サンダーチェイン",{"かみなり":4},30,[],
     [{orientations:["立ち","あおむけ","うつぶせ"],effects:[mkEffect("bonusDamage",{value:30}),mkEffect("charRerollOnMatch",{})]}]),
   mkPreset("サンダー","そら","そらをとぶ",{"そら":1,"むしょく":2},30,[],
-    [{orientations:["よこむき(左)","よこむき(右)"],effects:[mkEffect("fullDamageImmunityNextHit",{})]},
+    [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("fullDamageImmunityNextHit",{})]},
      {orientations:["あおむけ","うつぶせ","さかさ"],effects:[mkEffect("forceFailure",{})]}]),
 
   mkPreset("ファイヤー","ほのお","ほのおのつばさ",{"ほのお":2},30,[],
@@ -1312,7 +1324,7 @@ const PRESET_MOVES = [
   mkPreset("ゲンガー","あく","まっさかさま",{"あく":2},20,[],
     [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("forceOpponentCharOrientation",{orientation:"さかさ"})]}]),
   mkPreset("ゲンガー","あく","ファントムトリック",{"あく":4},10,[],
-    [{orientations:["立ち","さかさ","あおむけ","うつぶせ"],effects:[mkEffect("opponentMultiCharRollBonus",{rollCount:3,orientations:["さかさ","うつぶせ"],value:40})]}]),
+    [{orientations:["立ち","あおむけ","よこむき(左)","よこむき(右)"],effects:[mkEffect("opponentMultiCharRollBonus",{rollCount:3,orientations:["さかさ","うつぶせ"],value:40})]}]),
   mkPreset("ゲンガー","あく","ガスでつつむ",{"あく":1},10,[],
     [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("bonusDamage",{value:10})]}]),
   mkPreset("ゲンガー","ちょう","サイコウェーブ",{"ちょう":1,"むしょく":3},30,[],
@@ -1357,6 +1369,8 @@ const CPU_AUTO_ADVANCE_DELAYS = { quick:200, normal:600, slow:1500 };
 // ダイスロールのアニメーション速度。offの場合はアニメーションを省略し即座に結果を表示する。
 let diceAnimSpeed = "normal";
 const DICE_ANIM_DELAYS = { quick:150, normal:550, slow:1200 };
+// 対戦中、ワザ選択画面にその時点のエネコロ構成での発動成功率を表示するかどうか。デフォルトはオフ。
+let showMoveSuccessRate = false;
 
 // nextBtnが表示されている状態から、指定した速度設定に従って自動タップする(offなら何もしない)
 function scheduleNextBtnAutoClick(speed){
@@ -1699,7 +1713,7 @@ function generateBuildCanvas(p){
   // フッター
   ctx.fillStyle = "#8C8C90";
   ctx.font = "20px 'Inter', sans-serif";
-  ctx.fillText("プラコロシュミレーター", cardX, y+20);
+  ctx.fillText("プラコロシミュレータ", cardX, y+20);
 
   return canvas;
 }
@@ -2841,9 +2855,14 @@ function computeRealTimeEV(move, tp, op){
     }
     if(g.effects.some(e=>e.kind==="forceOpponentCharOrientation")) groupNonDmg += AVG_CHARCHECK_EV;
     if(g.effects.some(e=>e.kind==="selfNextCharFixedToThisRoll")){
-      // しそくえんざん自体は専用の精密計算(他ワザの上乗せ期待値の平均)を使い、
-      // それ以外の同種効果を持つワザ(将来追加分)は暫定の簡易推定にフォールバックする
-      groupNonDmg += (move.name==="しそくえんざん") ? computeShisokuEnzanUplift(true) : AVG_CHARCHECK_EV * 0.5;
+      // しそくえんざん自体は専用の精密計算(他ワザの上乗せ期待値の平均)を使うが、
+      // 既に向きが固定されている状況では「再固定」に新たな価値は無いため、ボーナスを与えない
+      // (固定済みの向きは、それを活かす他のワザで消化すべきであり、再固定を優先させないための措置)
+      if(move.name==="しそくえんざん"){
+        groupNonDmg += (forcedOrientation===null) ? computeShisokuEnzanUplift(true) : 0;
+      } else {
+        groupNonDmg += AVG_CHARCHECK_EV * 0.5;
+      }
     }
     const multiRollEff = g.effects.find(e=>e.kind==="opponentMultiCharRollBonus");
     if(multiRollEff){
@@ -3265,13 +3284,15 @@ function renderBattle(){
       });
     });
   } else {
+    const op = tp===0?1:0;
     picker.innerHTML = player.moves.map((m,mi)=>{
       const isLast = mi===battle.lastMove[tp];
       const isDisabled = mi===st.disabledMoveIndex;
       const disabled = isLast || isDisabled;
       const why = isDisabled?"(封じられ中)":(isLast?"(前ターンと同じ)":"");
+      const successRatePct = showMoveSuccessRate ? Math.round(computeRealTimeEV(m, tp, op).moveSuccess*100) : undefined;
       return `<button class="movebtn ${battle.selectedMoveIdx===mi?'selected':''}" ${disabled?'disabled':''} data-mi="${mi}">
-        ${moveInfoHTML(m, true, why?`<span class="why">${why}</span>`:"")}
+        ${moveInfoHTML(m, true, why?`<span class="why">${why}</span>`:"", successRatePct)}
       </button>`;
     }).join("");
     picker.querySelectorAll("button").forEach(b=>{
@@ -3950,6 +3971,11 @@ document.getElementById("diceAnimSelect").addEventListener("change", (e)=>{
 document.getElementById("darkModeToggle").addEventListener("change", (e)=>{
   document.body.classList.toggle("dark-mode", e.target.checked);
 });
+document.getElementById("successRateToggle").addEventListener("change", (e)=>{
+  showMoveSuccessRate = e.target.checked;
+  if(typeof battle!=="undefined" && battle && !battle.over && document.getElementById("battlePhase").style.display!=="none") renderBattle();
+});
+document.getElementById("successRateToggle").checked = showMoveSuccessRate;
 
 // Xシェア用モーダルを開き、構築画像を生成してプレビュー表示する
 function openShareModal(pi){
