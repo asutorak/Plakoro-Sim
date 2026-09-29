@@ -391,7 +391,7 @@
       <p style="margin:6.5px 0;">当サイトのご利用によって生じたいかなる損害についても、運営者は責任を負いかねます。</p>
       <p style="margin:6.5px 0;">権利者様より削除等のご要望があった場合は、速やかに対応いたします。</p>
     </fieldset>
-    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v2.12</p>
+    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v2.14</p>
   </div>
 </div>
 
@@ -645,9 +645,9 @@ const EFFECT_KINDS = [
   ["ignoreWeakness","このワザは弱点ダメージを計算しない"],
   ["repeatOnSuccess","成功時、失敗するまでこのワザをもう一度使う(連続発動)"],
   ["conditionalPrevOwnMove","前の自分の番に指定したワザが成功していたなら効果を発生"],
-  ["opponentLastMoveFailedBonus","前の相手の番のワザが失敗していたなら追加ダメージ"],
+  ["opponentLastMoveFailedBonus","前の相手の番、相手のワザのエネコロが失敗していたなら追加ダメージ"],
   ["opponentCharRollBonus","相手にもキャラコロを振らせ、指定の向きが出たら追加ダメージ"],
-  ["selfLastMoveFailedBonus","前の自分の番のワザが失敗していたなら追加ダメージ"],
+  ["selfLastMoveFailedBonus","前の自分の番、自分のワザのエネコロが失敗していたなら追加ダメージ"],
   ["opponentCharDieDisabledNextTurn","次の相手の番、相手はキャラコロを振れなくする"],
   ["fullDamageImmunityNextHit","次に自分が受けるワザのダメージを完全に無効化する"],
   ["forceFailure","このワザは強制的に失敗になる(ダメージ・効果なし)"],
@@ -680,9 +680,9 @@ function describeEffect(eff){
     case "ignoreWeakness": return `弱点ダメージ無視`;
     case "repeatOnSuccess": return `成功でもう一度使う`;
     case "conditionalPrevOwnMove": return `前の自分の番「${eff.moveName}」成功で${eff.outcome==="selfHeal"?`HP+${eff.value}`:`+${eff.value}`}`;
-    case "opponentLastMoveFailedBonus": return `相手が前ターン失敗で+${eff.value}`;
+    case "opponentLastMoveFailedBonus": return `相手の前ターンのエネコロ失敗で+${eff.value}`;
     case "opponentCharRollBonus": return `相手キャラコロ[${(eff.orientations||[]).join("/")}]で+${eff.value}`;
-    case "selfLastMoveFailedBonus": return `自分が前ターン失敗で+${eff.value}`;
+    case "selfLastMoveFailedBonus": return `自分の前ターンのエネコロ失敗で+${eff.value}`;
     case "opponentCharDieDisabledNextTurn": return `相手キャラコロ封じ(次の番)`;
     case "fullDamageImmunityNextHit": return `被ダメ完全無効(次の1回)`;
     case "forceFailure": return `このワザは強制失敗になる`;
@@ -832,7 +832,7 @@ function moveHasIgnoreWeaknessEffect(move){
 // 主力タイプ以外に、B面タイプに配置可能なワザ(最も期待値が高いもの)を持つポケモンのB面タイプ上書き用テーブル
 // (存在しない場合はデフォルトのFIXED_B_TYPES[0]のまま)
 const SECONDARY_B_TYPE_OVERRIDE = {
-  "フシギダネ": "はがね", // アシッドボム
+  "フシギダネ": "あく",   // アシッドボム
   "ゼニガメ": "とう",     // マッドショット
   "カイロス": "とう",     // かわらわり
   "フリーザー": "そら",   // エアカッター
@@ -1082,15 +1082,16 @@ const PRESET_MOVES = [
      {orientations:["さかさ","うつぶせ"],effects:[mkEffect("selfDamage",{value:30})]}]),
   mkPreset("フシギダネ","くさ","ギガドレイン",{"くさ":4},40,[],
     [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("selfHeal",{value:40})]}]),
-  mkPreset("フシギダネ","はがね","アシッドボム",{"はがね":1,"むしょく":2},10,[],
+  mkPreset("フシギダネ","あく","アシッドボム",{"あく":1,"むしょく":2},10,[],
     [{orientations:["立ち","よこむき(左)","よこむき(右)"],effects:[mkEffect("bonusDamage",{value:20})]}]),
   mkPreset("ヒトカゲ","ほのお","ひのこ",{"ほのお":2},20,[],
     [{orientations:["立ち","あおむけ"],effects:[mkEffect("bonusDamage",{value:30})]}]),
   mkPreset("ヒトカゲ","ほのお","ヒートアップ",{"ほのお":2},10,[],
     [{orientations:["立ち","あおむけ"],effects:[mkEffect("selfEnergyNextTurn",{value:2})]}]),
+  // ※公式DBの記載は「2個少なくする」だが、カード画像の「1個少なくする」を正とする
   mkPreset("ヒトカゲ","ほのお","かえんほうしゃ",{"ほのお":3},40,[],
     [{orientations:["立ち","あおむけ"],effects:[mkEffect("bonusDamage",{value:20})]},
-     {orientations:["さかさ","うつぶせ","よこむき(左)","よこむき(右)"],effects:[mkEffect("selfEnergyNextTurn",{value:-2})]}]),
+     {orientations:["さかさ","うつぶせ","よこむき(左)","よこむき(右)"],effects:[mkEffect("selfEnergyNextTurn",{value:-1})]}]),
   mkPreset("ヒトカゲ","ほのお","ほのおのキバ",{"ほのお":4},30,[],
     [{orientations:["立ち","あおむけ","うつぶせ"],effects:[mkEffect("bonusDamage",{value:30})]}]),
   mkPreset("ヒトカゲ","ほのお","フレアストーム",{"むしょく":5},20,[],
@@ -2199,7 +2200,7 @@ document.addEventListener("click",(e)=>{
 });
 
 /* ================= BATTLE LOGIC ================= */
-function freshStatus(){ return { energyModifierNextTurn:0, incomingDamageReduction:0, disabledMoveIndex:null, lastMoveName:null, lastMoveSuccess:null, charDieDisabled:false, fullImmunity:false, turnsTaken:0, gachiDokuState:"pending", reductionArmedAtTurn:null, fullImmunityArmedAtTurn:null, forcedCharOrientation:null }; }
+function freshStatus(){ return { energyModifierNextTurn:0, incomingDamageReduction:0, disabledMoveIndex:null, lastMoveName:null, lastMoveSuccess:null, lastMoveEnergyFailed:null, charDieDisabled:false, fullImmunity:false, turnsTaken:0, gachiDokuState:"pending", reductionArmedAtTurn:null, fullImmunityArmedAtTurn:null, forcedCharOrientation:null }; }
 
 // ガチモードのEV計算で使う定数(期待値分析と同じ値)
 const RESTRICTION_BONUS = 4.78;
@@ -2535,7 +2536,7 @@ PLAKORO_DEVTOOLS 使い方ガイド (開発者向けデバッグAPI)
    例: fastSimulateBattle("イワーク","ゼニガメ","gachi","random",500)
 
 2. computeEVLookup()
-   全105ワザの理論期待値(最適化ダイス3個・弱点なし前提)をまとめて計算して返す。
+   全ワザの理論期待値(最適化ダイス3個・弱点なし前提)をまとめて計算して返す。
    返り値: { "ポケモン名": { "ワザ名": 数値, ... }, ... }
    ※既に EV_LOOKUP という変数に計算済みの結果が入っている(再計算は基本不要)
 
@@ -2549,7 +2550,7 @@ PLAKORO_DEVTOOLS 使い方ガイド (開発者向けデバッグAPI)
    例: theoreticalSuccessRateForCost({"かみなり":3}, 3) → 0.8009...
 
 5. PRESET_MOVES / CHARACTERS
-   全105ワザ・12キャラクターの生データ配列(読み取り専用として参照可能)
+   全ワザ・全キャラクターの生データ配列(読み取り専用として参照可能)
 
 【注意点】
 - fastSimulateBattle は内部で state/battle を一時的に書き換えるが、実行後は必ず元の状態に復元される。
@@ -2779,15 +2780,17 @@ function computeRealTimeEV(move, tp, op){
       return eff.outcome==="selfHeal" ? {heal:eff.value} : {dmg:eff.value};
     }
     if(eff.kind==="opponentLastMoveFailedBonus"){
-      return battle.status[op].lastMoveSuccess===false ? {dmg:eff.value} : {dmg:0};
+      return battle.status[op].lastMoveEnergyFailed===true ? {dmg:eff.value} : {dmg:0};
     }
     if(eff.kind==="selfLastMoveFailedBonus"){
-      return battle.status[tp].lastMoveSuccess===false ? {dmg:eff.value} : {dmg:0};
+      return battle.status[tp].lastMoveEnergyFailed===true ? {dmg:eff.value} : {dmg:0};
     }
     return null;
   }
 
-  let weaknessBonus = ((move.dmg||0)>0 && !moveHasIgnoreWeaknessEffect(move) && move.type===opponent.weakness) ? WEAKNESS_BONUS_VALUE : 0;
+  // 弱点ボーナスは「実際にダメージが発生した場合のみ」加算されるため、ここでは値だけ決めておき、
+  // ダメージが発生する確率(pDamage)を求めた後に最後に掛けて加算する
+  const weaknessBonus = (!moveHasIgnoreWeaknessEffect(move) && move.type===opponent.weakness) ? WEAKNESS_BONUS_VALUE : 0;
 
   const uncondHeal = move.moveEffects.filter(e=>e.kind==="selfHeal").reduce((s,e)=>s+e.value,0);
   const uncondReduce = move.moveEffects.filter(e=>e.kind==="incomingDamageReductionNextHit").reduce((s,e)=>s+e.value,0) * NEXT_HIT_DEFENSE_RELIABILITY;
@@ -2797,12 +2800,18 @@ function computeRealTimeEV(move, tp, op){
   // 「ダメージ」由来の値と、それ以外(回復・エネコロ変化等)の値を分けて集計する。
   // 相手の被ダメ軽減・完全無効化は「ダメージ」部分にのみ適用されるべきなので、
   // ここで分離しておかないと正しく反映できない。
-  let uncondDmgRaw = (move.dmg||0) + weaknessBonus;
+  let uncondDmgRaw = (move.dmg||0);
   let uncondNonDmgRaw = uncondHeal + uncondReduce + uncondRestrict + uncondEnergy - uncondSelfDmg;
   move.moveEffects.forEach(e=>{
     const v=condVal(e);
     if(v){ uncondDmgRaw += (v.dmg||0); uncondNonDmgRaw += (v.heal||0); }
   });
+  // リフレクション: ワザ効果(無条件)として相手が最後に選んだワザの表記ダメージを与える
+  if(move.moveEffects.some(e=>e.kind==="mirrorLastOpponentMoveDamage")){
+    const oppLastMove = state.players[op].moves.find(m=>m.name===battle.status[op].lastMoveName);
+    uncondDmgRaw += oppLastMove ? (oppLastMove.dmg||0) : 0;
+  }
+  let pDmgPerRoll = 0; // 1回のキャラコロで「ダメージを生むグループ」に一致する確率(弱点ボーナスの発生確率計算用)
 
   const multiEff = move.moveEffects.find(e=>e.kind==="multiCharRoll");
   const N = multiEff ? multiEff.value : 1;
@@ -2881,12 +2890,15 @@ function computeRealTimeEV(move, tp, op){
 
     charDmgRaw += groupDmg * hitsExpected;
     charNonDmgRaw += groupNonDmg * hitsExpected;
+    if(groupDmg>0) pDmgPerRoll += pBase;
   });
+  // ワザ成功時に実際にダメージが発生する確率
+  const pDamage = uncondDmgRaw>0 ? 1 : (1 - Math.pow(1 - Math.min(1, pDmgPerRoll), N));
 
   // 相手が現在「被ダメージ軽減」「完全無効化」を持っている場合、ダメージ由来の値にのみ反映する
   // (回復・エネコロ変化等はダメージではないため軽減の対象外)
   const oppSt = battle.status[op];
-  let totalDmgRaw = uncondDmgRaw + charDmgRaw;
+  let totalDmgRaw = uncondDmgRaw + charDmgRaw + weaknessBonus * pDamage;
   if(oppSt.fullImmunity){
     totalDmgRaw = 0;
   } else if(oppSt.incomingDamageReduction > 0){
@@ -2902,7 +2914,10 @@ function computeRealTimeEV(move, tp, op){
 function moveMaxPossibleDamage(move, tp, op){
   const opponent = state.players[op];
   let maxDmg = move.dmg||0;
-  if(maxDmg>0 && !moveHasIgnoreWeaknessEffect(move) && move.type===opponent.weakness) maxDmg += WEAKNESS_BONUS_VALUE;
+  if(move.moveEffects.some(e=>e.kind==="mirrorLastOpponentMoveDamage")){
+    const oppLastMove = state.players[op].moves.find(m=>m.name===battle.status[op].lastMoveName);
+    maxDmg += oppLastMove ? (oppLastMove.dmg||0) : 0;
+  }
   const multiEff = move.moveEffects.find(e=>e.kind==="multiCharRoll");
   const N = multiEff ? multiEff.value : 1;
   let bestGroupBonus = 0;
@@ -2926,8 +2941,8 @@ function moveMaxPossibleDamage(move, tp, op){
         const st = battle.status[tp];
         if(st.lastMoveName===e.moveName && st.lastMoveSuccess===true) bonus += e.value;
       }
-      if(e.kind==="opponentLastMoveFailedBonus" && battle.status[op].lastMoveSuccess===false) bonus += e.value;
-      if(e.kind==="selfLastMoveFailedBonus" && battle.status[tp].lastMoveSuccess===false) bonus += e.value;
+      if(e.kind==="opponentLastMoveFailedBonus" && battle.status[op].lastMoveEnergyFailed===true) bonus += e.value;
+      if(e.kind==="selfLastMoveFailedBonus" && battle.status[tp].lastMoveEnergyFailed===true) bonus += e.value;
       if(e.kind==="conditionalBonusDamageLowHP" && battle.hp[tp]<=e.hpThreshold) bonus += e.value;
     });
     const isDouble = g.effects.some(e=>e.kind==="doubleDamage");
@@ -2935,7 +2950,9 @@ function moveMaxPossibleDamage(move, tp, op){
     if(isDouble) groupTotal = (maxDmg+groupTotal)*2 - maxDmg;
     if(groupTotal>bestGroupBonus) bestGroupBonus = groupTotal;
   });
-  const rawMax = maxDmg + bestGroupBonus;
+  let rawMax = maxDmg + bestGroupBonus;
+  // 弱点ボーナスは実際にダメージが発生する場合のみ加算(実戦のダメージ計算と同じ扱い)
+  if(rawMax>0 && !moveHasIgnoreWeaknessEffect(move) && move.type===opponent.weakness) rawMax += WEAKNESS_BONUS_VALUE;
   // 相手が現在「被ダメージ軽減」「完全無効化」を持っている場合、最大ダメージ見積もりにも反映する
   // (でないと「軽減されているのに勝てる」と誤判定してしまう)
   const oppSt = battle.status[op];
@@ -3470,10 +3487,14 @@ function applyEffect(eff, ctx){
     case "selfHeal":
       battle.hp[ctx.tp] = Math.min(state.players[ctx.tp].hp, battle.hp[ctx.tp]+eff.value);
       ctx.details.push(`自分のHPを${eff.value}回復`); break;
-    case "selfDamage":
+    case "selfDamage":{
+      // 無効化(だいばくはつ等)で戻す量は、表記上の値ではなく実際に減ったHPにする
+      // (残りHPが表記値より少ない時に、無効化で元のHP以上に回復してしまうのを防ぐ)
+      const hpBeforeSelfDmg = battle.hp[ctx.tp];
       battle.hp[ctx.tp] = Math.max(0, battle.hp[ctx.tp]-eff.value);
-      ctx.selfDamageAppliedThisTurn = (ctx.selfDamageAppliedThisTurn||0) + eff.value;
+      ctx.selfDamageAppliedThisTurn = (ctx.selfDamageAppliedThisTurn||0) + (hpBeforeSelfDmg - battle.hp[ctx.tp]);
       ctx.details.push(`自分にも${eff.value}ダメージ`); break;
+    }
     case "opponentEnergyNextTurn":
       battle.status[ctx.op].energyModifierNextTurn += eff.value;
       ctx.details.push(`相手の次のエネコロが${eff.value>0?"+":""}${eff.value}`); break;
@@ -3525,11 +3546,12 @@ function applyEffect(eff, ctx){
     }
     case "opponentLastMoveFailedBonus":{
       const st = battle.status[ctx.op];
-      if(st.lastMoveSuccess===false){
+      // 公式テキストは「相手のワザのエネコロが失敗していたなら」。キャラコロ効果による失敗(そらをとぶ等)は含めない
+      if(st.lastMoveEnergyFailed===true){
         ctx.dmgRef.v += eff.value;
-        ctx.details.push(`前の相手の番のワザが失敗していた → +${eff.value}ダメージ`);
+        ctx.details.push(`前の相手の番、相手のワザのエネコロが失敗していた → +${eff.value}ダメージ`);
       } else {
-        ctx.details.push(`(前の相手の番のワザは失敗していないため不発)`);
+        ctx.details.push(`(前の相手の番、相手のワザのエネコロは失敗していないため不発)`);
       }
       break;
     }
@@ -3545,11 +3567,12 @@ function applyEffect(eff, ctx){
     }
     case "selfLastMoveFailedBonus":{
       const st = battle.status[ctx.tp];
-      if(st.lastMoveSuccess===false){
+      // 公式テキストは「自分のワザのエネコロが失敗していたなら」。キャラコロ効果による失敗は含めない
+      if(st.lastMoveEnergyFailed===true){
         ctx.dmgRef.v += eff.value;
-        ctx.details.push(`前の自分の番のワザが失敗していた → +${eff.value}ダメージ`);
+        ctx.details.push(`前の自分の番、自分のワザのエネコロが失敗していた → +${eff.value}ダメージ`);
       } else {
-        ctx.details.push(`(前の自分の番のワザは失敗していないため不発)`);
+        ctx.details.push(`(前の自分の番、自分のワザのエネコロは失敗していないため不発)`);
       }
       break;
     }
@@ -3635,7 +3658,7 @@ function applyEffect(eff, ctx){
     case "negateSelfDamageFromThisMove":
       if(ctx.selfDamageAppliedThisTurn){
         battle.hp[ctx.tp] = Math.min(state.players[ctx.tp].hp, battle.hp[ctx.tp]+ctx.selfDamageAppliedThisTurn);
-        ctx.details.push(`このワザによる自分への${ctx.selfDamageAppliedThisTurn}ダメージを無効化した`);
+        ctx.details.push(`このワザによる自分へのダメージを無効化した(HP${ctx.selfDamageAppliedThisTurn}分を戻した)`);
         ctx.selfDamageAppliedThisTurn = 0;
       }
       break;
@@ -3659,7 +3682,7 @@ function runAttempt(move, tp, op, player, opponent, energyDiceCount, dieIndices)
   const success = checkCostSuccess(costArrToDict(move.cost), energyFlat);
 
   if(!success){
-    return {success:false, charFaces:[], rolledFaces, energyDisplay, dmg:0, details:["エネルギー不足でワザ失敗。キャラコロチェックなし。"], repeat:false};
+    return {success:false, energyFailed:true, charFaces:[], rolledFaces, energyDisplay, dmg:0, details:["エネルギー不足でワザ失敗。キャラコロチェックなし。"], repeat:false};
   }
 
   // キャラコロを振る（固定回数指定 or 一致する限り振り続ける、を1つのループで処理）
@@ -3713,9 +3736,6 @@ function runAttempt(move, tp, op, player, opponent, energyDiceCount, dieIndices)
   const ignoreWeakness = combinedEffects.some(e=>e.kind==="ignoreWeakness");
 
   details.push(`ワザ成功！ 基礎ダメージ${move.dmg||0}`);
-  if((move.dmg||0)>0 && !ignoreWeakness && move.type===opponent.weakness){ dmgRef.v += WEAKNESS_BONUS_VALUE; details.push(`弱点タイプ一致で+${WEAKNESS_BONUS_VALUE}`); }
-  else if((move.dmg||0)>0 && ignoreWeakness && move.type===opponent.weakness){ details.push("弱点タイプ一致だが、このワザは弱点を計算しない"); }
-  else if((move.dmg||0)===0 && move.type===opponent.weakness){ details.push("基礎ダメージ0のため、弱点タイプ一致でも弱点ボーナスは加算しない"); }
 
   const ctx = {tp,op,dmgRef,details,energyFlat,hpBeforeEffects,charFaces};
   move.moveEffects.forEach(eff=>{ if(eff.kind!=="multiCharRoll") applyEffect(eff, ctx); else details.push(`キャラコロを合計${eff.value}回振る`); });
@@ -3732,6 +3752,13 @@ function runAttempt(move, tp, op, player, opponent, energyDiceCount, dieIndices)
   matchedGroupEffects.forEach(eff=>applyEffect(eff, ctx));
 
   let dmg = Math.max(0, dmgRef.v);
+  // 弱点ボーナスは、ワザ自身の効果(追加ダメージ・2倍等)を全て反映した後、実際にダメージが発生した場合のみ加算する。
+  // 基礎ダメージ0でも、キャラコロ効果等でダメージが出ていれば加算対象(ダブルサンダー・はねまわる・リフレクション等)。
+  if(move.type===opponent.weakness){
+    if(ignoreWeakness){ details.push("弱点タイプ一致だが、このワザは弱点を計算しない"); }
+    else if(dmg>0){ dmg += WEAKNESS_BONUS_VALUE; details.push(`弱点タイプ一致で+${WEAKNESS_BONUS_VALUE}`); }
+    else { details.push("ダメージが発生していないため、弱点タイプ一致でも弱点ボーナスは加算しない"); }
+  }
   const defStatus = battle.status[op];
   if(defStatus.fullImmunity){
     details.push(`${opponent.name}は次のワザダメージを完全に無効化する効果によりダメージ0`);
@@ -3765,6 +3792,7 @@ function resolveTurn(move, tp, op, player, opponent, energyDiceCount, dieIndices
     document.getElementById("turnBanner").innerHTML = `${escHtml(player.name)}のこうげきは はずれた！<span style="font-size:0.55em;">▼</span>`;
     battle.status[tp].lastMoveName = move.name;
     battle.status[tp].lastMoveSuccess = false;
+    battle.status[tp].lastMoveEnergyFailed = !!first.energyFailed; // キャラコロ効果による失敗はfalse
     updateGachiDokuState(tp, move, false);
     updateHPBars();
     document.getElementById("rollBtn").style.display="none";
@@ -3792,6 +3820,7 @@ function resolveTurn(move, tp, op, player, opponent, energyDiceCount, dieIndices
 
   battle.status[tp].lastMoveName = move.name;
   battle.status[tp].lastMoveSuccess = true;
+  battle.status[tp].lastMoveEnergyFailed = false;
   updateGachiDokuState(tp, move, true);
 
   box.className = "resultbox success";
