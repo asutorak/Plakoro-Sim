@@ -391,7 +391,7 @@
       <p style="margin:6.5px 0;">当サイトのご利用によって生じたいかなる損害についても、運営者は責任を負いかねます。</p>
       <p style="margin:6.5px 0;">権利者様より削除等のご要望があった場合は、速やかに対応いたします。</p>
     </fieldset>
-    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v2.07</p>
+    <p style="text-align:center;margin-top:14px;color:var(--sprue-dark);font-size:9px;">plakoro-sim v2.12</p>
   </div>
 </div>
 
@@ -607,7 +607,6 @@ function typeSelectStyle(type){
 // 実際のワザカードでは「よこむき」が左右2面に分かれている(公式カード表記に準拠)。
 // キャラコロは6面ダイスなので、この6つが均等(各1/6)で出る。
 const ORIENTATIONS = ["立ち","さかさ","あおむけ","うつぶせ","よこむき(左)","よこむき(右)"];
-const CHAR_FACES = ORIENTATIONS;
 
 let _orientationIconSeq = 0;
 // 指定した向きを表す、黒い角丸四角から顔をくり抜いたアイコンのSVGを返す
@@ -743,8 +742,11 @@ let modalContext = null; // {pi, mi} 現在ワザ選択モーダルが対象に�
 
 function openMovePresetModal(pi, mi){
   const p = state.players[pi];
+  normalizeDiceFaces(p);
   const selectedMon = p.mon;
-  const monList = selectedMon ? [selectedMon] : ["フシギダネ","ヒトカゲ","ゼニガメ","ピカチュウ","ベトベター","イワーク","カイロス","イーブイ","フリーザー","サンダー","ファイヤー","ミュウ"];
+  // 「カスタム(自由入力)」時に全ポケモンのワザを一覧表示する。CHARACTERSから動的に生成することで、
+  // 今後ポケモンが追加されてもここを個別に更新する必要がないようにする(テスト用ポケモンは除外)。
+  const monList = selectedMon ? [selectedMon] : CHARACTERS.map(c=>c.mon).filter(mon=>!mon.includes("テスト用"));
   modalContext = {pi, mi};
 
   const listHost = document.getElementById("movePresetModalList");
@@ -755,8 +757,9 @@ function openMovePresetModal(pi, mi){
       if(pm.mon!==mon) return "";
       // 自分以外のスロットで既に選択済みのワザは、選べないようグレーアウトする
       const usedElsewhere = p.moves.some((m2,mi2)=>mi2!==mi && m2.name===pm.name);
+      const successRatePct = showMoveSuccessRate ? Math.round(rawMoveSuccessRate(pm, p.diceFaces, 3)*100) : undefined;
       return `<button type="button" class="movebtn movebtn-modal${usedElsewhere?' movebtn-used':''}" data-presetidx="${pmi}" ${usedElsewhere?'disabled':''} style="width:100%;text-align:left;margin-bottom:7px;">
-        ${moveInfoHTML(pm, true, usedElsewhere?'<span class="why">（他のワザ枠で選択中）</span>':"")}
+        ${moveInfoHTML(pm, true, usedElsewhere?'<span class="why">（他のワザ枠で選択中）</span>':"", successRatePct)}
       </button>`;
     }).join("");
     return selectedMon ? cards : `<div style="margin:9px 0 5.5px;font-weight:800;font-size:11.5px;">${mon}</div>${cards}`;
@@ -815,6 +818,14 @@ function costArrToDict(costArr){
 }
 function mkMove(type,name,cost,dmg,moveEffects,charGroups){
   return {type,name,cost:costObjToArr(cost),dmg, moveEffects: moveEffects||[], charGroups: charGroups||[]};
+}
+
+// 弱点タイプ一致ボーナスの固定値(実戦のダメージ計算・AIの期待値見積もり・最大ダメージ見積もりの3箇所で共通利用)
+const WEAKNESS_BONUS_VALUE = 20;
+// そのワザが(発動条件を問わず)ignoreWeakness効果を持ちうるか静的に判定する。
+// 見積もり計算(実際にどのキャラコロ目が出るか確定していない時点)でのみ使用する簡易判定。
+function moveHasIgnoreWeaknessEffect(move){
+  return move.moveEffects.some(e=>e.kind==="ignoreWeakness") || move.charGroups.some(g=>g.effects.some(e=>e.kind==="ignoreWeakness"));
 }
 
 // ポケモン選択時のオートフィルと同じロジックでプレイヤーの初期データを組み立てる
@@ -1007,7 +1018,7 @@ function mkPreset(mon,type,name,costObj,dmg,moveEffects,charGroups){
   m.mon = mon;
   return m;
 }
-// 公式サイト「プラコロ一覧(キャラカード)」掲載の12体分のデータ。
+// 公式サイト「プラコロ一覧(キャラカード)」掲載分のデータ(テスト用のコイキングを除く)。
 // 期待値分析(上位3ワザ+デメリット無視のフィニッシャー枠)に基づく推奨初期ワザ構成
 // 期待値分析で算出した各ワザの期待値(参考表示用)
 let EV_LOOKUP = {}; // 実際の値はページ下部で computeEVLookup() により動的に算出される
@@ -1816,33 +1827,13 @@ function roundRectPathScaled(ctx, x, y, w, h, r){
 }
 
 
-// canvas上でテキストを指定幅で折り返し描画する(最大行数を超える場合は末尾を省略)
-function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines){
-  const chars = text.split("");
-  let line = "";
-  let lines = [];
-  chars.forEach(ch=>{
-    const test = line + ch;
-    if(ctx.measureText(test).width > maxWidth && line){
-      lines.push(line);
-      line = ch;
-    } else {
-      line = test;
-    }
-  });
-  if(line) lines.push(line);
-  if(lines.length > maxLines){
-    lines = lines.slice(0, maxLines);
-    lines[maxLines-1] = lines[maxLines-1].slice(0, -1) + "…";
-  }
-  lines.forEach((l,i)=>{ ctx.fillText(l, x, y+i*lineHeight); });
-}
-
 function moveEditorHTML(pi,mi,m,selectedMon){
   const hint = `タップしてワザを変更 ▸`;
+  const p = state.players[pi];
+  const successRatePct = showMoveSuccessRate ? Math.round(rawMoveSuccessRate(m, p.diceFaces, 3)*100) : undefined;
   return `
   <div class="movecard-static" data-act="openMovePresetModal" data-p="${pi}" data-m="${mi}">
-    ${moveInfoHTML(m, true, hint)}
+    ${moveInfoHTML(m, true, hint, successRatePct)}
   </div>`;
 }
 
@@ -2538,7 +2529,7 @@ PLAKORO_DEVTOOLS 使い方ガイド (開発者向けデバッグAPI)
 【全関数一覧】
 1. fastSimulateBattle(p1Mon, p2Mon, p1Mode, p2Mode, N)
    2体のポケモンをN回対戦させ、勝敗数を集計する。
-   - p1Mon, p2Mon: ポケモン名(例:"ミュウ","ファイヤー","フシギダネ" 等、CHARACTERSに定義された12体)
+   - p1Mon, p2Mon: ポケモン名(例:"ミュウ","ファイヤー","フシギダネ" 等、CHARACTERSに定義されたポケモン)
    - p1Mode, p2Mode: "gachi"(期待値・勝機判断に基づくロトム) または "random"(ランダム選択ロトム)
    - N: 試行回数(省略時200)
    例: fastSimulateBattle("イワーク","ゼニガメ","gachi","random",500)
@@ -2744,6 +2735,12 @@ function isCPUTurn(){
   return !battle.over && !!state.players[battle.turnPlayer].isCPU;
 }
 
+// 表示用の「純粋な」成功率(キャラコロ効果によるforceFailureは考慮しない、エネコロのコスト成否のみ)
+function rawMoveSuccessRate(move, diceFacesList, diceCount){
+  const costDict = costArrToDict(move.cost);
+  return realSuccessRate(costDict, diceFacesList, diceCount);
+}
+
 function computeRealTimeEV(move, tp, op){
   const player = state.players[tp], opponent = state.players[op];
   const costDict = costArrToDict(move.cost);
@@ -2790,7 +2787,7 @@ function computeRealTimeEV(move, tp, op){
     return null;
   }
 
-  let weaknessBonus = (!ffGroup && move.type===opponent.weakness) ? 20 : (ffGroup && move.type===opponent.weakness ? 20 : 0);
+  let weaknessBonus = ((move.dmg||0)>0 && !moveHasIgnoreWeaknessEffect(move) && move.type===opponent.weakness) ? WEAKNESS_BONUS_VALUE : 0;
 
   const uncondHeal = move.moveEffects.filter(e=>e.kind==="selfHeal").reduce((s,e)=>s+e.value,0);
   const uncondReduce = move.moveEffects.filter(e=>e.kind==="incomingDamageReductionNextHit").reduce((s,e)=>s+e.value,0) * NEXT_HIT_DEFENSE_RELIABILITY;
@@ -2905,7 +2902,7 @@ function computeRealTimeEV(move, tp, op){
 function moveMaxPossibleDamage(move, tp, op){
   const opponent = state.players[op];
   let maxDmg = move.dmg||0;
-  if(move.type===opponent.weakness) maxDmg += 20;
+  if(maxDmg>0 && !moveHasIgnoreWeaknessEffect(move) && move.type===opponent.weakness) maxDmg += WEAKNESS_BONUS_VALUE;
   const multiEff = move.moveEffects.find(e=>e.kind==="multiCharRoll");
   const N = multiEff ? multiEff.value : 1;
   let bestGroupBonus = 0;
@@ -3290,7 +3287,7 @@ function renderBattle(){
       const isDisabled = mi===st.disabledMoveIndex;
       const disabled = isLast || isDisabled;
       const why = isDisabled?"(封じられ中)":(isLast?"(前ターンと同じ)":"");
-      const successRatePct = showMoveSuccessRate ? Math.round(computeRealTimeEV(m, tp, op).moveSuccess*100) : undefined;
+      const successRatePct = showMoveSuccessRate ? Math.round(rawMoveSuccessRate(m, player.diceFaces, energyDiceCountFor(tp))*100) : undefined;
       return `<button class="movebtn ${battle.selectedMoveIdx===mi?'selected':''}" ${disabled?'disabled':''} data-mi="${mi}">
         ${moveInfoHTML(m, true, why?`<span class="why">${why}</span>`:"", successRatePct)}
       </button>`;
@@ -3716,8 +3713,9 @@ function runAttempt(move, tp, op, player, opponent, energyDiceCount, dieIndices)
   const ignoreWeakness = combinedEffects.some(e=>e.kind==="ignoreWeakness");
 
   details.push(`ワザ成功！ 基礎ダメージ${move.dmg||0}`);
-  if(!ignoreWeakness && move.type===opponent.weakness){ dmgRef.v += 20; details.push("弱点タイプ一致で+20"); }
-  else if(ignoreWeakness && move.type===opponent.weakness){ details.push("弱点タイプ一致だが、このワザは弱点を計算しない"); }
+  if((move.dmg||0)>0 && !ignoreWeakness && move.type===opponent.weakness){ dmgRef.v += WEAKNESS_BONUS_VALUE; details.push(`弱点タイプ一致で+${WEAKNESS_BONUS_VALUE}`); }
+  else if((move.dmg||0)>0 && ignoreWeakness && move.type===opponent.weakness){ details.push("弱点タイプ一致だが、このワザは弱点を計算しない"); }
+  else if((move.dmg||0)===0 && move.type===opponent.weakness){ details.push("基礎ダメージ0のため、弱点タイプ一致でも弱点ボーナスは加算しない"); }
 
   const ctx = {tp,op,dmgRef,details,energyFlat,hpBeforeEffects,charFaces};
   move.moveEffects.forEach(eff=>{ if(eff.kind!=="multiCharRoll") applyEffect(eff, ctx); else details.push(`キャラコロを合計${eff.value}回振る`); });
@@ -3973,6 +3971,7 @@ document.getElementById("darkModeToggle").addEventListener("change", (e)=>{
 });
 document.getElementById("successRateToggle").addEventListener("change", (e)=>{
   showMoveSuccessRate = e.target.checked;
+  if(document.getElementById("setupPhase").classList.contains("visible")) renderSetup();
   if(typeof battle!=="undefined" && battle && !battle.over && document.getElementById("battlePhase").style.display!=="none") renderBattle();
 });
 document.getElementById("successRateToggle").checked = showMoveSuccessRate;
